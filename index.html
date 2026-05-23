@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mara Store — Formulario de Envío</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand: #3b7de8;
+      --brand-dark: #2563eb;
+      --green: #22c55e;
+      --green-dark: #16a34a;
+      --orange: #f97316;
+      --danger: #e24b4a;
+      --bg: #f5f5f0;
+      --surface: #ffffff;
+      --border: #e2e2dc;
+      --text: #1a1a18;
+      --muted: #6b6b65;
+      --radius: 10px;
+      --radius-lg: 14px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .container {
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1rem;
+    }
+    .logo {
+      width: 40px; height: 40px;
+      background: #eef3fd;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .header h1 { font-size: 15px; font-weight: 600; color: var(--text); }
+    .header p  { font-size: 11px; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; margin-top: 1px; }
+
+    /* Corte */
+    .corte {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: var(--radius);
+      padding: 11px 14px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .corte-icon { font-size: 17px; flex-shrink: 0; margin-top: 1px; }
+    .corte strong { display: block; font-size: 13px; font-weight: 600; color: #c2410c; }
+    .corte span   { font-size: 12px; color: #9a3412; }
+
+    /* Card form */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Fields */
+    .field { margin-bottom: 1.1rem; }
+    .field:last-child { margin-bottom: 0; }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+    label .req { color: var(--danger); margin-left: 2px; }
+
+    input[type=text],
+    input[type=tel],
+    input[type=date],
+    select {
+      width: 100%;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0 12px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      background: var(--surface);
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    input:focus, select:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(59,125,232,.12);
+    }
+    select {
+      appearance: none;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b65' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 13px center;
+      padding-right: 34px;
+    }
+
+    /* Phone */
+    .phone-wrap { display: flex; gap: 8px; }
+    .prefix {
+      height: 42px;
+      padding: 0 12px;
+      background: #f5f5f0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex; align-items: center;
+      font-size: 14px; font-weight: 500; color: var(--muted);
+      white-space: nowrap; flex-shrink: 0;
+    }
+
+    /* Search dropdown */
+    .search-wrap { position: relative; }
+    .search-ico {
+      position: absolute; left: 12px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 15px; color: var(--muted);
+      pointer-events: none;
+    }
+    .search-wrap input { padding-left: 34px; }
+
+    .drop {
+      position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      max-height: 200px; overflow-y: auto;
+      z-index: 100; display: none;
+      box-shadow: 0 4px 16px rgba(0,0,0,.08);
+    }
+    .drop.open { display: block; }
+    .ditem {
+      padding: 9px 12px; cursor: pointer;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+      transition: background .1s;
+    }
+    .ditem:last-child { border-bottom: none; }
+    .ditem:hover { background: #f5f5f0; }
+    .ditem .dt { font-weight: 500; color: var(--text); }
+    .ditem .dd { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* Badge selected */
+    .badge {
+      display: flex; align-items: center; justify-content: space-between;
+      background: #eef3fd;
+      border: 1px solid #c7d9f8;
+      border-radius: var(--radius);
+      padding: 8px 12px;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+    .badge span { color: var(--brand-dark); flex: 1; margin-right: 8px; font-weight: 500; }
+    .badge button {
+      background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 18px; line-height: 1; padding: 0;
+    }
+
+    /* Hidden */
+    .hidden { display: none !important; }
+
+    /* Divider */
+    .section-label {
+      font-size: 11px; font-weight: 600; color: var(--muted);
+      letter-spacing: .07em; text-transform: uppercase;
+      margin-bottom: .75rem;
+    }
+
+    /* Submit button */
+    .btn-submit {
+      width: 100%; height: 46px;
+      background: var(--brand);
+      color: #fff;
+      border: none; border-radius: var(--radius);
+      font-size: 14px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background .15s, transform .1s;
+      margin-top: .25rem;
+    }
+    .btn-submit:hover { background: var(--brand-dark); }
+    .btn-submit:active { transform: scale(.98); }
+
+    /* Success */
+    .success-wrap { text-align: center; }
+    .success-circle {
+      width: 60px; height: 60px;
+      background: #dcfce7;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 28px;
+    }
+    .success-title { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+    .success-sub { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 1.25rem; }
+
+    .resumen-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.1rem;
+      text-align: left;
+      margin-bottom: .75rem;
+    }
+    .rrow {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 7px 0; font-size: 13px;
+      border-bottom: 1px solid var(--border);
+    }
+    .rrow:last-child { border-bottom: none; }
+    .rrow .rico { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .rrow span { color: var(--text); line-height: 1.4; }
+
+    .btn-wa {
+      width: 100%; height: 46px;
+      background: var(--green);
+      color: #fff;
+      border: none; border-radius: var(--radius);
+      font-size: 14px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background .15s;
+      margin-bottom: .5rem;
+    }
+    .btn-wa:hover { background: var(--green-dark); }
+
+    .btn-sec {
+      width: 100%; height: 42px;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 13px; font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-sec:hover { background: var(--bg); }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 1.5rem;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 1rem .75rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">📦</div>
+    <div>
+      <h1>Mara Store</h1>
+      <p>Formulario de envío</p>
+    </div>
+  </div>
+
+  <!-- Hora de corte -->
+  <div class="corte">
+    <span class="corte-icon">🕐</span>
+    <div>
+      <strong>Hora de corte: 17:00</strong>
+      <span>Asegura tu envío registrando tus datos antes de la hora de corte.</span>
+    </div>
+  </div>
+
+  <!-- FORMULARIO -->
+  <div id="form-area">
+    <div class="card">
+      <div class="section-label">Tus datos de contacto</div>
+
+      <div class="field">
+        <label>Tu WhatsApp <span class="req">*</span></label>
+        <div class="phone-wrap">
+          <div class="prefix">+51</div>
+          <input type="tel" id="whatsapp" placeholder="987654321" maxlength="9">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Nombre y Apellidos <span class="req">*</span></label>
+        <input type="text" id="nombre" placeholder="Nombre completo">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-label">Método de envío</div>
+
+      <div class="field">
+        <label>¿Cómo quieres recibir tu pedido? <span class="req">*</span></label>
+        <select id="tipo-envio" onchange="onTipoChange()">
+          <option value="">Elige una opción...</option>
+          <option value="shalom">Retiro en agencia Shalom</option>
+          <option value="delivery">Delivery (Solo Lima)</option>
+          <option value="olva">Retiro en agencia Olva Courier</option>
+        </select>
+      </div>
+
+      <!-- SHALOM -->
+      <div class="field hidden" id="field-shalom">
+        <label>Busca tu agencia Shalom <span class="req">*</span></label>
+        <div class="search-wrap">
+          <span class="search-ico">🔍</span>
+          <input type="text" id="search-shalom" placeholder="Escribe ciudad o distrito..." oninput="filterAg('shalom')" onfocus="openDrop('shalom')" autocomplete="off">
+          <div class="drop" id="drop-shalom"></div>
+        </div>
+        <div class="badge hidden" id="badge-shalom">
+          <span id="badge-shalom-t"></span>
+          <button onclick="clearAg('shalom')" aria-label="Quitar">×</button>
+        </div>
+      </div>
+
+      <!-- OLVA -->
+      <div class="field hidden" id="field-olva">
+        <label>Busca tu agencia Olva Courier <span class="req">*</span></label>
+        <div class="search-wrap">
+          <span class="search-ico">🔍</span>
+          <input type="text" id="search-olva" placeholder="Escribe ciudad o distrito..." oninput="filterAg('olva')" onfocus="openDrop('olva')" autocomplete="off">
+          <div class="drop" id="drop-olva"></div>
+        </div>
+        <div class="badge hidden" id="badge-olva">
+          <span id="badge-olva-t"></span>
+          <button onclick="clearAg('olva')" aria-label="Quitar">×</button>
+        </div>
+      </div>
+
+      <!-- DNI (Agencias) -->
+      <div class="field hidden" id="field-dni">
+        <label>DNI / CE para recoger <span class="req">*</span></label>
+        <input type="text" id="dni" placeholder="Ej: 12345678" maxlength="12">
+      </div>
+
+      <!-- DELIVERY -->
+      <div class="field hidden" id="field-distrito">
+        <label>Distrito <span class="req">*</span></label>
+        <div class="search-wrap">
+          <span class="search-ico">📍</span>
+          <input type="text" id="search-distrito" placeholder="Buscar distrito..." oninput="filterDist()" onfocus="openDrop('distrito')" autocomplete="off">
+          <div class="drop" id="drop-distrito"></div>
+        </div>
+        <div class="badge hidden" id="badge-distrito">
+          <span id="badge-distrito-t"></span>
+          <button onclick="clearDist()" aria-label="Quitar">×</button>
+        </div>
+      </div>
+
+      <div class="field hidden" id="field-direccion">
+        <label>Dirección exacta <span class="req">*</span></label>
+        <input type="text" id="direccion" placeholder="Calle, Av, Número...">
+      </div>
+
+      <div class="field hidden" id="field-referencia">
+        <label>Referencia</label>
+        <input type="text" id="referencia" placeholder="Color de casa, frente a...">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-label">Detalles adicionales</div>
+
+      <div class="field">
+        <label>Fecha de envío</label>
+        <input type="date" id="fecha">
+      </div>
+
+      <div class="field">
+        <label>Observaciones</label>
+        <input type="text" id="obs" placeholder="Algo que debamos saber...">
+      </div>
+    </div>
+
+    <button class="btn-submit" onclick="enviar()">
+      📅 Agendar y ver resumen
+    </button>
+  </div>
+
+  <!-- SUCCESS -->
+  <div id="success-area" class="hidden">
+    <div class="success-wrap">
+      <div class="success-circle">✅</div>
+      <p class="success-title">¡Registro exitoso!</p>
+      <p class="success-sub">Tu envío ha sido programado correctamente.<br>Verifica los datos y envíalos por WhatsApp con el botón verde.</p>
+    </div>
+
+    <div class="resumen-card">
+      <div class="section-label" style="margin-bottom:.5rem">Resumen del pedido</div>
+      <div id="resumen-rows"></div>
+    </div>
+
+    <button class="btn-wa" onclick="enviarWA()">
+      💬 Enviar por WhatsApp
+    </button>
+    <button class="btn-sec" onclick="resetForm()">
+      ← Nuevo pedido
+    </button>
+  </div>
+
+  <div class="footer">
+    Formulario de envío · Mara Store<br>
+    Todos los datos son tratados con confidencialidad.
+  </div>
+
+</div>
+
+<script>
+// ─── DATOS ───────────────────────────────────────────────
+const AG = {
+  shalom: [
+    // LIMA
+    {t:"Lima / Lima / Cercado — Av. Colonial",       d:"Av. Óscar R. Benavides 860, Cercado de Lima"},
+    {t:"Lima / Lima / Cercado — Av. México",         d:"Av. México 1187, La Victoria"},
+    {t:"Lima / Lima / Rímac — Av. Amancaes",         d:"Av. Amancaes 644, El Rímac"},
+    {t:"Lima / Lima / SJL — Próceres",               d:"Av. Próceres de la Independencia 1295, SJL"},
+    {t:"Lima / Lima / SJL — Gran Chimú",             d:"Av. Gran Chimú 420, SJL"},
+    {t:"Lima / Lima / SMP — Av. Universitaria",      d:"Av. Universitaria 2015, San Martín de Porres"},
+    {t:"Lima / Lima / Los Olivos — Las Palmeras",    d:"Av. Las Palmeras 5240, Los Olivos"},
+    {t:"Lima / Lima / Independencia — Túpac Amaru",  d:"Av. Túpac Amaru 3580, Independencia"},
+    {t:"Lima / Lima / Comas",                        d:"Av. Universitaria Norte 6300, Comas"},
+    {t:"Lima / Lima / Puente Piedra",                d:"Av. Leoncio Prado 640, Puente Piedra"},
+    {t:"Lima / Lima / La Victoria — Jr. Luna Pizarro",d:"Jr. Luna Pizarro 701, La Victoria"},
+    {t:"Lima / Lima / El Agustino",                  d:"Av. Riva Agüero 1050, El Agustino"},
+    {t:"Lima / Lima / Ate Vitarte",                  d:"Carretera Central Km 6.5, Ate"},
+    {t:"Lima / Lima / Santa Anita",                  d:"Av. Los Eucaliptos 320, Santa Anita"},
+    {t:"Lima / Lima / San Juan de Lurigancho — Canto Grande",d:"Av. El Sol Mz. B, Canto Grande, SJL"},
+    {t:"Lima / Lima / Villa El Salvador",            d:"Av. Revolución 1290, Villa El Salvador"},
+    {t:"Lima / Lima / Villa María del Triunfo",      d:"Av. José C. Mariátegui 1250, VMT"},
+    {t:"Lima / Lima / San Juan de Miraflores",       d:"Av. San Juan 1056, SJM"},
+    {t:"Lima / Lima / Chorrillos",                   d:"Av. Huaylas 850, Chorrillos"},
+    {t:"Lima / Lima / San Miguel",                   d:"Av. La Marina 2100, San Miguel"},
+    {t:"Lima / Lima / Plaza Norte — Gerardo Unger",  d:"Av. Gerardo Unger 6917, Terminal Plaza Norte"},
+    {t:"Lima / Lima / Manchay — Km 11.5",            d:"Km 11.5 Carretera Cieneguilla, Manchay"},
+    // CALLAO
+    {t:"Lima / Callao / Callao — Av. Argentina",     d:"Av. Argentina 2600, Callao"},
+    {t:"Lima / Callao / Bellavista",                 d:"Av. Sáenz Peña 555, Bellavista"},
+    {t:"Lima / Callao / Ventanilla",                 d:"Av. Néstor Gambetta 7500, Ventanilla"},
+    // AREQUIPA
+    {t:"Arequipa / Arequipa / Cercado — Av. Parra",  d:"Av. Parra 379, Arequipa"},
+    {t:"Arequipa / Arequipa / Miraflores",           d:"Av. Ejercito 200, Miraflores - Arequipa"},
+    {t:"Arequipa / Arequipa / Mariano Melgar",       d:"Av. Jesús 210, Mariano Melgar - Arequipa"},
+    {t:"Arequipa / Arequipa / Paucarpata",           d:"Av. Paucarpata 440, Paucarpata - Arequipa"},
+    {t:"Arequipa / Arequipa / Cerro Colorado",       d:"Av. Aviación 908, Cerro Colorado"},
+    {t:"Arequipa / Arequipa / Socabaya",             d:"Av. Socabaya 350, Socabaya - Arequipa"},
+    {t:"Arequipa / Arequipa / Alto Selva Alegre",    d:"Av. Aviación 100, Alto Selva Alegre"},
+    // LA LIBERTAD
+    {t:"La Libertad / Trujillo / Trujillo — Jr. Gamarra",d:"Jr. Gamarra 380, Trujillo"},
+    {t:"La Libertad / Trujillo / El Porvenir",       d:"Av. Sánchez Carrión 1150, El Porvenir - Trujillo"},
+    {t:"La Libertad / Trujillo / Florencia de Mora", d:"Av. Pumacahua 540, Florencia de Mora"},
+    {t:"La Libertad / Trujillo / La Esperanza",      d:"Av. Condorcanqui 1200, La Esperanza - Trujillo"},
+    {t:"La Libertad / Trujillo / Huamachuco",        d:"Jr. Sánchez Carrión 312, Huamachuco"},
+    // PIURA
+    {t:"Piura / Piura / Piura — Jr. Loreto",         d:"Jr. Loreto 480, Piura"},
+    {t:"Piura / Piura / Castilla",                   d:"Av. Panamericana Norte Km 3, Castilla - Piura"},
+    {t:"Piura / Piura / Sullana",                    d:"Av. José de Lama 765, Sullana"},
+    {t:"Piura / Piura / Talara",                     d:"Av. Grau 410, Talara"},
+    {t:"Piura / Piura / Paita",                      d:"Jr. Comercio 240, Paita"},
+    {t:"Piura / Piura / Tambogrande",                d:"Av. Piura 320, Tambogrande"},
+    // LAMBAYEQUE
+    {t:"Lambayeque / Chiclayo / Chiclayo — Av. Balta",d:"Av. Balta 1220, Chiclayo"},
+    {t:"Lambayeque / Chiclayo / José Leonardo Ortiz",d:"Av. Salaverry 740, José L. Ortiz"},
+    {t:"Lambayeque / Chiclayo / La Victoria — Chiclayo",d:"Av. América Nro. 825, La Victoria - Chiclayo"},
+    {t:"Lambayeque / Chiclayo / Ferreñafe",          d:"Av. Tacna 315, Ferreñafe"},
+    {t:"Lambayeque / Lambayeque / Lambayeque",       d:"Av. 2 de Mayo 650, Lambayeque"},
+    // CUSCO
+    {t:"Cusco / Cusco / Cusco — Av. La Cultura",     d:"Av. La Cultura 1800, Cusco"},
+    {t:"Cusco / Cusco / San Jerónimo",               d:"Av. Collasuyo 1010, San Jerónimo - Cusco"},
+    {t:"Cusco / Cusco / Wanchaq — Av. Expresa",      d:"Av. Expresa Mz E Lt 8, Parque Industrial Wanchaq"},
+    {t:"Cusco / Espinar / Espinar",                  d:"Av. 2 de Mayo 530, Espinar - Cusco"},
+    // JUNIN
+    {t:"Junín / Huancayo / Huancayo — Av. Mariscal Castilla",d:"Av. Mariscal Castilla 2769, Huancayo"},
+    {t:"Junín / Huancayo / El Tambo",                d:"Av. Huancavelica 1560, El Tambo - Huancayo"},
+    {t:"Junín / Huancayo / Chilca",                  d:"Av. Ferrocarril 410, Chilca - Huancayo"},
+    {t:"Junín / Chanchamayo / La Merced",            d:"Jr. Tarma 280, La Merced - Chanchamayo"},
+    // SAN MARTÍN
+    {t:"San Martín / San Martín / Tarapoto",         d:"Jr. Shapaja 130, Tarapoto"},
+    {t:"San Martín / San Martín / Morales",          d:"Jr. Alfonso Ugarte 410, Morales - Tarapoto"},
+    {t:"San Martín / Moyobamba / Moyobamba",         d:"Jr. Callao 760, Moyobamba"},
+    {t:"San Martín / Rioja / Nueva Cajamarca",       d:"Jr. Gran 540, Nueva Cajamarca"},
+    // ANCASH
+    {t:"Áncash / Huaraz / Huaraz — Jr. Luzuriaga",  d:"Jr. Luzuriaga 724, Huaraz"},
+    {t:"Áncash / Santa / Chimbote",                  d:"Av. Enrique Meiggs 2457, Chimbote"},
+    {t:"Áncash / Santa / Nuevo Chimbote",            d:"Av. Country 530, Nuevo Chimbote"},
+    // LORETO
+    {t:"Loreto / Maynas / Iquitos — Av. La Marina",  d:"Av. La Marina 1560, Iquitos"},
+    {t:"Loreto / Maynas / Belén",                    d:"Jr. Progreso 820, Belén - Iquitos"},
+    // UCAYALI
+    {t:"Ucayali / Coronel Portillo / Pucallpa",      d:"Jr. Inmaculada 540, Pucallpa"},
+    {t:"Ucayali / Coronel Portillo / Yarinacocha",   d:"Jr. San Martín 210, Yarinacocha"},
+    // PUNO
+    {t:"Puno / Puno / Puno — Jr. Moquegua",          d:"Jr. Moquegua 150, Puno"},
+    {t:"Puno / San Román / Juliaca — Jr. Mama Ocllo",d:"Jr. Mama Ocllo 915-B (cruce Jr. Azángaro), Juliaca"},
+    {t:"Puno / San Román / Juliaca — Av. Huancané",  d:"Jr. Sillustani 202, San Román - Juliaca"},
+    {t:"Puno / San Román / Juliaca — Las Mercedes",  d:"Jr. Porvenir 228 Urb. Las Mercedes, Juliaca"},
+    // CAJAMARCA
+    {t:"Cajamarca / Cajamarca / Cajamarca",          d:"Jr. Del Batán 188, Cajamarca"},
+    {t:"Cajamarca / Cajamarca / Baños del Inca",     d:"Jr. Manco Cápac 540, Baños del Inca"},
+    // ICA
+    {t:"Ica / Ica / Ica",                            d:"Av. Municipalidad 420, Ica"},
+    {t:"Ica / Chincha / Chincha Alta",               d:"Av. Benavides 860, Chincha Alta"},
+    {t:"Ica / Pisco / Pisco",                        d:"Jr. Callao 340, Pisco"},
+    // TACNA
+    {t:"Tacna / Tacna / Tacna — Av. Grau",           d:"Av. Grau 410, Tacna"},
+    // MOQUEGUA
+    {t:"Moquegua / Mariscal Nieto / Moquegua",       d:"Jr. Ayacucho 310, Moquegua"},
+    {t:"Moquegua / Ilo / Ilo",                       d:"Av. Matará 520, Ilo"},
+    // HUANUCO
+    {t:"Huánuco / Huánuco / Huánuco",                d:"Jr. General Prado 840, Huánuco"},
+    // AYACUCHO
+    {t:"Ayacucho / Huamanga / Ayacucho",             d:"Jr. Asamblea 310, Huamanga - Ayacucho"},
+    // AMAZONAS
+    {t:"Amazonas / Chachapoyas / Chachapoyas",       d:"Jr. Ortiz Arrieta 560, Chachapoyas"},
+    // MADRE DE DIOS
+    {t:"Madre de Dios / Tambopata / Puerto Maldonado",d:"Jr. Fitzcarrald 490, Puerto Maldonado"},
+    // APURIMAC
+    {t:"Apurímac / Andahuaylas / Andahuaylas",       d:"Av. Los Cedros 274, Andahuaylas"},
+    {t:"Apurímac / Cotabambas / Challhuahuacho",     d:"Barrio Wichaypampa Lt. 13-15-16, Challhuahuacho"},
+    // TUMBES
+    {t:"Tumbes / Tumbes / Tumbes",                   d:"Av. Tumbes Norte 420, Tumbes"},
+  ],
+
+  olva: [
+    // LIMA
+    {t:"Lima / Lima / Miraflores",                   d:"Av. Larco 345, Miraflores"},
+    {t:"Lima / Lima / San Isidro",                   d:"Av. Javier Prado Este 1230, San Isidro"},
+    {t:"Lima / Lima / San Borja",                    d:"Av. San Borja Norte 800, San Borja"},
+    {t:"Lima / Lima / Surquillo",                    d:"Av. Tomás Marsano 2140, Surquillo"},
+    {t:"Lima / Lima / Pueblo Libre",                 d:"Av. Brasil 2750, Pueblo Libre"},
+    {t:"Lima / Lima / Jesús María",                  d:"Av. Jesús María 310, Jesús María"},
+    {t:"Lima / Lima / San Miguel",                   d:"Av. La Mar 1280, San Miguel"},
+    {t:"Lima / Lima / La Molina",                    d:"Av. La Molina 610, La Molina"},
+    {t:"Lima / Lima / Santiago de Surco",            d:"Av. Caminos del Inca 1840, Surco"},
+    {t:"Lima / Lima / Lince",                        d:"Av. Arequipa 2650, Lince"},
+    {t:"Lima / Lima / Barranco",                     d:"Av. Grau 980, Barranco"},
+    {t:"Lima / Lima / Chorrillos",                   d:"Av. Guardia Civil 1260, Chorrillos"},
+    {t:"Lima / Lima / SJL",                          d:"Av. Próceres de la Independencia 2040, SJL"},
+    {t:"Lima / Lima / Los Olivos",                   d:"Av. Alfredo Mendiola 3698, Los Olivos"},
+    {t:"Lima / Lima / San Martín de Porres",         d:"Av. Canta Callao 1050, SMP"},
+    {t:"Lima / Lima / Ate",                          d:"Av. Nicolás Ayllon 2340, Ate"},
+    {t:"Lima / Callao / Callao",                     d:"Av. Sáenz Peña 650, Callao"},
+    {t:"Lima / Callao / Bellavista",                 d:"Jr. Colina 440, Bellavista - Callao"},
+    // AREQUIPA
+    {t:"Arequipa / Arequipa / Arequipa",             d:"Av. Goyeneche 120, Arequipa"},
+    {t:"Arequipa / Arequipa / Cayma",                d:"Av. Ejército 1009, Cayma - Arequipa"},
+    // LA LIBERTAD
+    {t:"La Libertad / Trujillo / Trujillo",          d:"Jr. Diego de Almagro 540, Trujillo"},
+    {t:"La Libertad / Trujillo / El Porvenir",       d:"Av. Pumacahua 320, El Porvenir"},
+    // PIURA
+    {t:"Piura / Piura / Piura",                      d:"Av. Grau 212, Piura"},
+    {t:"Piura / Piura / Sullana",                    d:"Av. Buenos Aires 540, Sullana"},
+    // LAMBAYEQUE
+    {t:"Lambayeque / Chiclayo / Chiclayo",           d:"Calle 7 de Enero 880, Chiclayo"},
+    // CUSCO
+    {t:"Cusco / Cusco / Cusco",                      d:"Av. El Sol 900, Cusco"},
+    // JUNIN
+    {t:"Junín / Huancayo / Huancayo",                d:"Jr. Huancas 230, Huancayo"},
+    // ANCASH
+    {t:"Áncash / Santa / Chimbote",                  d:"Av. Gálvez 510, Chimbote"},
+    // ICA
+    {t:"Ica / Ica / Ica",                            d:"Jr. Lima 340, Ica"},
+    // TACNA
+    {t:"Tacna / Tacna / Tacna",                      d:"Av. Bolognesi 790, Tacna"},
+  ]
+};
+
+const DIST = ["Ancón","Ate","Barranco","Breña","Carabayllo","Chaclacayo","Chorrillos","Cieneguilla","Comas","El Agustino","Independencia","Jesús María","La Molina","La Victoria","Lima","Lince","Los Olivos","Lurigancho","Lurín","Magdalena del Mar","Miraflores","Pachacámac","Pucusana","Pueblo Libre","Puente Piedra","Punta Hermosa","Punta Negra","Rímac","San Bartolo","San Borja","San Isidro","San Juan de Lurigancho","San Juan de Miraflores","San Luis","San Martín de Porres","San Miguel","Santa Anita","Santa María del Mar","Santa Rosa","Santiago de Surco","Surquillo","Villa El Salvador","Villa María del Triunfo"];
+
+let sel = { shalom: null, olva: null, distrito: null };
+
+// ─── LÓGICA CONDICIONAL ───────────────────────────────────
+function onTipoChange() {
+  const v = document.getElementById('tipo-envio').value;
+  const campos = ['field-shalom','field-olva','field-dni','field-distrito','field-direccion','field-referencia'];
+  campos.forEach(id => document.getElementById(id).classList.add('hidden'));
+  if (v === 'shalom')   ['field-shalom','field-dni'].forEach(id => document.getElementById(id).classList.remove('hidden'));
+  if (v === 'olva')     ['field-olva','field-dni'].forEach(id => document.getElementById(id).classList.remove('hidden'));
+  if (v === 'delivery') ['field-distrito','field-direccion','field-referencia'].forEach(id => document.getElementById(id).classList.remove('hidden'));
+}
+
+// ─── DROPDOWNS ───────────────────────────────────────────
+function openDrop(t) {
+  if (t === 'shalom' || t === 'olva') renderAg(t, '');
+  else renderDistDrop('');
+}
+
+function filterAg(t) {
+  renderAg(t, document.getElementById('search-' + t).value.toLowerCase());
+}
+
+function renderAg(t, q) {
+  const data = AG[t];
+  const f = q ? data.filter(a => a.t.toLowerCase().includes(q) || a.d.toLowerCase().includes(q)) : data;
+  const drop = document.getElementById('drop-' + t);
+  drop.innerHTML = f.slice(0, 12).map((a, i) => {
+    const idx = data.indexOf(a);
+    return `<div class="ditem" onclick="selAg('${t}',${idx})"><div class="dt">${a.t}</div><div class="dd">${a.d}</div></div>`;
+  }).join('');
+  drop.classList.add('open');
+}
+
+function selAg(t, i) {
+  sel[t] = AG[t][i];
+  document.getElementById('drop-' + t).classList.remove('open');
+  document.getElementById('search-' + t).value = '';
+  document.getElementById('badge-' + t + '-t').textContent = AG[t][i].t;
+  document.getElementById('badge-' + t).classList.remove('hidden');
+}
+
+function clearAg(t) {
+  sel[t] = null;
+  document.getElementById('badge-' + t).classList.add('hidden');
+}
+
+function filterDist() {
+  renderDistDrop(document.getElementById('search-distrito').value.toLowerCase());
+}
+
+function renderDistDrop(q) {
+  const f = q ? DIST.filter(d => d.toLowerCase().includes(q)) : DIST;
+  const drop = document.getElementById('drop-distrito');
+  drop.innerHTML = f.map(d => `<div class="ditem" onclick="selDist('${d}')"><div class="dt">${d}</div></div>`).join('');
+  drop.classList.add('open');
+}
+
+function selDist(d) {
+  sel.distrito = d;
+  document.getElementById('drop-distrito').classList.remove('open');
+  document.getElementById('search-distrito').value = '';
+  document.getElementById('badge-distrito-t').textContent = d;
+  document.getElementById('badge-distrito').classList.remove('hidden');
+}
+
+function clearDist() {
+  sel.distrito = null;
+  document.getElementById('badge-distrito').classList.add('hidden');
+}
+
+document.addEventListener('click', function(e) {
+  ['shalom','olva','distrito'].forEach(t => {
+    const drop = document.getElementById('drop-' + t);
+    const inp  = document.getElementById('search-' + t);
+    if (drop && inp && !drop.contains(e.target) && e.target !== inp)
+      drop.classList.remove('open');
+  });
+});
+
+// ─── ENVIAR ───────────────────────────────────────────────
+function enviar() {
+  const wa    = document.getElementById('whatsapp').value.trim();
+  const nom   = document.getElementById('nombre').value.trim();
+  const tipo  = document.getElementById('tipo-envio').value;
+
+  if (!wa || !nom || !tipo) { alert('Completa: WhatsApp, nombre y tipo de envío.'); return; }
+  if (tipo === 'shalom'   && !sel.shalom)   { alert('Selecciona una agencia Shalom.'); return; }
+  if (tipo === 'olva'     && !sel.olva)     { alert('Selecciona una agencia Olva Courier.'); return; }
+  if ((tipo === 'shalom' || tipo === 'olva') && !document.getElementById('dni').value.trim()) { alert('Ingresa tu DNI/CE.'); return; }
+  if (tipo === 'delivery' && !sel.distrito) { alert('Selecciona tu distrito.'); return; }
+  if (tipo === 'delivery' && !document.getElementById('direccion').value.trim()) { alert('Ingresa tu dirección exacta.'); return; }
+
+  buildResumen();
+  document.getElementById('form-area').classList.add('hidden');
+  document.getElementById('success-area').classList.remove('hidden');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function buildResumen() {
+  const tipo  = document.getElementById('tipo-envio').value;
+  const nom   = document.getElementById('nombre').value.trim();
+  const wa    = document.getElementById('whatsapp').value.trim();
+  const fecha = document.getElementById('fecha').value;
+  const obs   = document.getElementById('obs').value.trim();
+  const tipoLabel = tipo==='shalom' ? 'Agencia Shalom' : tipo==='olva' ? 'Olva Courier' : 'Delivery Lima';
+
+  let rows = '';
+  rows += row('👤', nom);
+  rows += row('📱', '+51 ' + wa);
+  rows += row('🚚', tipoLabel);
+
+  if (tipo === 'shalom' && sel.shalom) {
+    rows += row('🏪', sel.shalom.t);
+    rows += row('📍', sel.shalom.d);
+    rows += row('🪪', 'DNI: ' + document.getElementById('dni').value.trim());
+  }
+  if (tipo === 'olva' && sel.olva) {
+    rows += row('🏪', sel.olva.t);
+    rows += row('📍', sel.olva.d);
+    rows += row('🪪', 'DNI: ' + document.getElementById('dni').value.trim());
+  }
+  if (tipo === 'delivery') {
+    rows += row('📍', sel.distrito);
+    rows += row('🏠', document.getElementById('direccion').value.trim());
+    const ref = document.getElementById('referencia').value.trim();
+    if (ref) rows += row('ℹ️', 'Ref: ' + ref);
+  }
+  if (fecha) rows += row('📅', fecha);
+  if (obs)   rows += row('💬', obs);
+
+  document.getElementById('resumen-rows').innerHTML = rows;
+}
+
+function row(ico, txt) {
+  return `<div class="rrow"><span class="rico">${ico}</span><span>${txt}</span></div>`;
+}
+
+function enviarWA() {
+  const tipo  = document.getElementById('tipo-envio').value;
+  const nom   = document.getElementById('nombre').value.trim();
+  const wa    = document.getElementById('whatsapp').value.trim();
+  const fecha = document.getElementById('fecha').value;
+  const obs   = document.getElementById('obs').value.trim();
+  const tipoLabel = tipo==='shalom' ? 'Agencia Shalom' : tipo==='olva' ? 'Olva Courier' : 'Delivery Lima';
+
+  let msg = `📦 *NUEVO ENVÍO — Mara Store*\n\n`;
+  msg += `👤 ${nom}\n📱 +51 ${wa}\n🚚 ${tipoLabel}\n`;
+
+  if (tipo === 'shalom' && sel.shalom) {
+    msg += `🏪 ${sel.shalom.t}\n📍 ${sel.shalom.d}\n🪪 DNI: ${document.getElementById('dni').value.trim()}\n`;
+  }
+  if (tipo === 'olva' && sel.olva) {
+    msg += `🏪 ${sel.olva.t}\n📍 ${sel.olva.d}\n🪪 DNI: ${document.getElementById('dni').value.trim()}\n`;
+  }
+  if (tipo === 'delivery') {
+    msg += `📍 ${sel.distrito}\n🏠 ${document.getElementById('direccion').value.trim()}\n`;
+    const ref = document.getElementById('referencia').value.trim();
+    if (ref) msg += `ℹ️ Ref: ${ref}\n`;
+  }
+  if (fecha) msg += `📅 Fecha: ${fecha}\n`;
+  if (obs)   msg += `💬 ${obs}`;
+
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function resetForm() {
+  sel = { shalom: null, olva: null, distrito: null };
+  ['whatsapp','nombre','dni','direccion','referencia','fecha','obs'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('tipo-envio').value = '';
+  onTipoChange();
+  ['badge-shalom','badge-olva','badge-distrito'].forEach(id => document.getElementById(id).classList.add('hidden'));
+  document.getElementById('form-area').classList.remove('hidden');
+  document.getElementById('success-area').classList.add('hidden');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+</script>
+</body>
+</html>
