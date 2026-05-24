@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mara Store — Formulario de Envío</title>
+  <title>Criz Closet — Formulario de Envío</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -288,7 +288,7 @@
   <div class="header">
     <div class="logo">📦</div>
     <div>
-      <h1>Mara Store</h1>
+      <h1>Criz Closet</h1>
       <p>Formulario de envío</p>
     </div>
   </div>
@@ -434,7 +434,7 @@
   </div>
 
   <div class="footer">
-    Formulario de envío · Mara Store<br>
+    Formulario de envío · Criz Closet<br>
     Todos los datos son tratados con confidencialidad.
   </div>
 
@@ -444,158 +444,297 @@
 // ─── DATOS ───────────────────────────────────────────────
 const AG = {
   shalom: [
-    // LIMA
-    {t:"Lima / Lima / Cercado — Av. Colonial",       d:"Av. Óscar R. Benavides 860, Cercado de Lima"},
-    {t:"Lima / Lima / Cercado — Av. México",         d:"Av. México 1187, La Victoria"},
-    {t:"Lima / Lima / Rímac — Av. Amancaes",         d:"Av. Amancaes 644, El Rímac"},
-    {t:"Lima / Lima / SJL — Próceres",               d:"Av. Próceres de la Independencia 1295, SJL"},
-    {t:"Lima / Lima / SJL — Gran Chimú",             d:"Av. Gran Chimú 420, SJL"},
-    {t:"Lima / Lima / SMP — Av. Universitaria",      d:"Av. Universitaria 2015, San Martín de Porres"},
-    {t:"Lima / Lima / Los Olivos — Las Palmeras",    d:"Av. Las Palmeras 5240, Los Olivos"},
-    {t:"Lima / Lima / Independencia — Túpac Amaru",  d:"Av. Túpac Amaru 3580, Independencia"},
-    {t:"Lima / Lima / Comas",                        d:"Av. Universitaria Norte 6300, Comas"},
-    {t:"Lima / Lima / Puente Piedra",                d:"Av. Leoncio Prado 640, Puente Piedra"},
+    // ── LIMA ──
+    {t:"Lima / Lima / Cercado — Av. Benavides",d:"Av. Óscar R. Benavides 860, Cercado de Lima"},
+    {t:"Lima / Lima / Cercado — Jr. Paruro",d:"Jr. Paruro 858, Cercado de Lima"},
+    {t:"Lima / Lima / Cercado — Av. Grau",d:"Av. Grau 1120, Cercado de Lima"},
+    {t:"Lima / Lima / Rímac — Av. Amancaes",d:"Av. Amancaes 644 Urb. Ciudad y Campo, Rímac"},
+    {t:"Lima / Lima / Rímac — Jr. Trujillo",d:"Jr. Trujillo 320, Rímac"},
     {t:"Lima / Lima / La Victoria — Jr. Luna Pizarro",d:"Jr. Luna Pizarro 701, La Victoria"},
-    {t:"Lima / Lima / El Agustino",                  d:"Av. Riva Agüero 1050, El Agustino"},
-    {t:"Lima / Lima / Ate Vitarte",                  d:"Carretera Central Km 6.5, Ate"},
-    {t:"Lima / Lima / Santa Anita",                  d:"Av. Los Eucaliptos 320, Santa Anita"},
+    {t:"Lima / Lima / La Victoria — Av. México",d:"Av. México 1187, La Victoria"},
+    {t:"Lima / Lima / La Victoria — Gamarra",d:"Jr. Agustín Gamarra 698, La Victoria"},
+    {t:"Lima / Lima / El Agustino",d:"Av. Riva Agüero 1050, El Agustino"},
+    {t:"Lima / Lima / Ate — Carretera Central",d:"Carretera Central Km 6.5, Ate Vitarte"},
+    {t:"Lima / Lima / Ate — Salamanca",d:"Av. Nicolás Ayllón 2340, Ate"},
+    {t:"Lima / Lima / Santa Anita",d:"Av. Los Eucaliptos 320, Santa Anita"},
+    {t:"Lima / Lima / San Juan de Lurigancho — Próceres",d:"Av. Próceres de la Independencia 1295, SJL"},
+    {t:"Lima / Lima / San Juan de Lurigancho — Gran Chimú",d:"Av. Gran Chimú 420, SJL"},
     {t:"Lima / Lima / San Juan de Lurigancho — Canto Grande",d:"Av. El Sol Mz. B, Canto Grande, SJL"},
-    {t:"Lima / Lima / Villa El Salvador",            d:"Av. Revolución 1290, Villa El Salvador"},
-    {t:"Lima / Lima / Villa María del Triunfo",      d:"Av. José C. Mariátegui 1250, VMT"},
-    {t:"Lima / Lima / San Juan de Miraflores",       d:"Av. San Juan 1056, SJM"},
-    {t:"Lima / Lima / Chorrillos",                   d:"Av. Huaylas 850, Chorrillos"},
-    {t:"Lima / Lima / San Miguel",                   d:"Av. La Marina 2100, San Miguel"},
-    {t:"Lima / Lima / Plaza Norte — Gerardo Unger",  d:"Av. Gerardo Unger 6917, Terminal Plaza Norte"},
-    {t:"Lima / Lima / Manchay — Km 11.5",            d:"Km 11.5 Carretera Cieneguilla, Manchay"},
-    // CALLAO
-    {t:"Lima / Callao / Callao — Av. Argentina",     d:"Av. Argentina 2600, Callao"},
-    {t:"Lima / Callao / Bellavista",                 d:"Av. Sáenz Peña 555, Bellavista"},
-    {t:"Lima / Callao / Ventanilla",                 d:"Av. Néstor Gambetta 7500, Ventanilla"},
-    // AREQUIPA
-    {t:"Arequipa / Arequipa / Cercado — Av. Parra",  d:"Av. Parra 379, Arequipa"},
-    {t:"Arequipa / Arequipa / Miraflores",           d:"Av. Ejercito 200, Miraflores - Arequipa"},
-    {t:"Arequipa / Arequipa / Mariano Melgar",       d:"Av. Jesús 210, Mariano Melgar - Arequipa"},
-    {t:"Arequipa / Arequipa / Paucarpata",           d:"Av. Paucarpata 440, Paucarpata - Arequipa"},
-    {t:"Arequipa / Arequipa / Cerro Colorado",       d:"Av. Aviación 908, Cerro Colorado"},
-    {t:"Arequipa / Arequipa / Socabaya",             d:"Av. Socabaya 350, Socabaya - Arequipa"},
-    {t:"Arequipa / Arequipa / Alto Selva Alegre",    d:"Av. Aviación 100, Alto Selva Alegre"},
-    // LA LIBERTAD
+    {t:"Lima / Lima / San Juan de Lurigancho — Bayóvar",d:"Av. Las Flores de Lima 355, SJL"},
+    {t:"Lima / Lima / San Martín de Porres — Universitaria",d:"Av. Universitaria 2015, SMP"},
+    {t:"Lima / Lima / San Martín de Porres — Naranjal",d:"Av. Naranjal 698, SMP"},
+    {t:"Lima / Lima / San Martín de Porres — Canta Callao",d:"Av. Canta Callao 1050, SMP"},
+    {t:"Lima / Lima / Los Olivos — Las Palmeras",d:"Av. Las Palmeras 5240, Los Olivos"},
+    {t:"Lima / Lima / Los Olivos — Universitaria Norte",d:"Av. Universitaria Norte 4850, Los Olivos"},
+    {t:"Lima / Lima / Los Olivos — Alfredo Mendiola",d:"Av. Alfredo Mendiola 1400, Los Olivos"},
+    {t:"Lima / Lima / Independencia — Túpac Amaru",d:"Av. Túpac Amaru 3580, Independencia"},
+    {t:"Lima / Lima / Independencia — Av. Independencia",d:"Av. Independencia 440, Independencia"},
+    {t:"Lima / Lima / Comas — Universitaria Norte",d:"Av. Universitaria Norte 6300, Comas"},
+    {t:"Lima / Lima / Comas — Túpac Amaru",d:"Av. Túpac Amaru 5490, Comas"},
+    {t:"Lima / Lima / Comas — Belaúnde",d:"Av. Belaúnde Oeste 1240, Comas"},
+    {t:"Lima / Lima / Carabayllo",d:"Av. Túpac Amaru Km 22, Carabayllo"},
+    {t:"Lima / Lima / Puente Piedra — Leoncio Prado",d:"Av. Leoncio Prado 640, Puente Piedra"},
+    {t:"Lima / Lima / Puente Piedra — Panamericana Norte",d:"Av. Panamericana Norte Km 33, Puente Piedra"},
+    {t:"Lima / Lima / Villa El Salvador — Revolución",d:"Av. Revolución 1290, Villa El Salvador"},
+    {t:"Lima / Lima / Villa El Salvador — César Vallejo",d:"Av. César Vallejo 1340, Villa El Salvador"},
+    {t:"Lima / Lima / Villa María del Triunfo — Mariátegui",d:"Av. José C. Mariátegui 1250, VMT"},
+    {t:"Lima / Lima / Villa María del Triunfo — Pachacútec",d:"Av. Pachacútec 2650, VMT"},
+    {t:"Lima / Lima / San Juan de Miraflores — Av. San Juan",d:"Av. San Juan 1056, SJM"},
+    {t:"Lima / Lima / San Juan de Miraflores — Panamericana Sur",d:"Panamericana Sur Km 16, SJM"},
+    {t:"Lima / Lima / Chorrillos — Huaylas",d:"Av. Huaylas 850, Chorrillos"},
+    {t:"Lima / Lima / Chorrillos — Defensores",d:"Av. Defensores del Morro 1240, Chorrillos"},
+    {t:"Lima / Lima / San Miguel",d:"Av. La Marina 2100, San Miguel"},
+    {t:"Lima / Lima / Surquillo",d:"Av. Tomás Marsano 1890, Surquillo"},
+    {t:"Lima / Lima / Santiago de Surco — Caminos del Inca",d:"Av. Caminos del Inca 1840, Surco"},
+    {t:"Lima / Lima / Lurigancho — Chosica",d:"Jr. Lima 432, Chosica - Lurigancho"},
+    {t:"Lima / Lima / Manchay",d:"Km 11.5 Carretera Cieneguilla, Manchay"},
+    {t:"Lima / Lima / Lurín",d:"Av. Antigua Panamericana Sur Km 38, Lurín"},
+    {t:"Lima / Lima / Plaza Norte — Gerardo Unger",d:"Av. Gerardo Unger 6917, Independencia"},
+    // ── CALLAO ──
+    {t:"Lima / Callao / Callao — Av. Argentina",d:"Av. Argentina 2600, Callao"},
+    {t:"Lima / Callao / Callao — Sáenz Peña",d:"Av. Sáenz Peña 555, Callao"},
+    {t:"Lima / Callao / Bellavista",d:"Av. Oscar R. Benavides 3866, Bellavista"},
+    {t:"Lima / Callao / Ventanilla",d:"Av. Néstor Gambetta 7500, Ventanilla"},
+    {t:"Lima / Callao / Mi Perú",d:"Av. La Playa 340, Mi Perú - Callao"},
+    // ── AREQUIPA ──
+    {t:"Arequipa / Arequipa / Cercado — Av. Parra",d:"Av. Parra 379, Arequipa"},
+    {t:"Arequipa / Arequipa / Miraflores",d:"Av. Ejercito 200, Miraflores - Arequipa"},
+    {t:"Arequipa / Arequipa / Mariano Melgar",d:"Av. Jesús 210, Mariano Melgar - Arequipa"},
+    {t:"Arequipa / Arequipa / Paucarpata",d:"Av. Paucarpata 440, Paucarpata - Arequipa"},
+    {t:"Arequipa / Arequipa / Cerro Colorado",d:"Av. Aviación 908, Cerro Colorado - Arequipa"},
+    {t:"Arequipa / Arequipa / Socabaya",d:"Av. Socabaya 350, Socabaya - Arequipa"},
+    {t:"Arequipa / Arequipa / Alto Selva Alegre",d:"Av. Aviación 100, Alto Selva Alegre - Arequipa"},
+    {t:"Arequipa / Arequipa / Hunter",d:"Av. Fernandini 320, Hunter - Arequipa"},
+    {t:"Arequipa / Arequipa / Sachaca",d:"Av. Arancota 140, Sachaca - Arequipa"},
+    {t:"Arequipa / Camaná / Camaná",d:"Jr. Lima 420, Camaná - Arequipa"},
+    {t:"Arequipa / Islay / Mollendo",d:"Jr. Comercio 310, Mollendo - Arequipa"},
+    // ── LA LIBERTAD ──
     {t:"La Libertad / Trujillo / Trujillo — Jr. Gamarra",d:"Jr. Gamarra 380, Trujillo"},
-    {t:"La Libertad / Trujillo / El Porvenir",       d:"Av. Sánchez Carrión 1150, El Porvenir - Trujillo"},
-    {t:"La Libertad / Trujillo / Florencia de Mora", d:"Av. Pumacahua 540, Florencia de Mora"},
-    {t:"La Libertad / Trujillo / La Esperanza",      d:"Av. Condorcanqui 1200, La Esperanza - Trujillo"},
-    {t:"La Libertad / Trujillo / Huamachuco",        d:"Jr. Sánchez Carrión 312, Huamachuco"},
-    // PIURA
-    {t:"Piura / Piura / Piura — Jr. Loreto",         d:"Jr. Loreto 480, Piura"},
-    {t:"Piura / Piura / Castilla",                   d:"Av. Panamericana Norte Km 3, Castilla - Piura"},
-    {t:"Piura / Piura / Sullana",                    d:"Av. José de Lama 765, Sullana"},
-    {t:"Piura / Piura / Talara",                     d:"Av. Grau 410, Talara"},
-    {t:"Piura / Piura / Paita",                      d:"Jr. Comercio 240, Paita"},
-    {t:"Piura / Piura / Tambogrande",                d:"Av. Piura 320, Tambogrande"},
-    // LAMBAYEQUE
+    {t:"La Libertad / Trujillo / Trujillo — España",d:"Av. España 1820, Trujillo"},
+    {t:"La Libertad / Trujillo / El Porvenir",d:"Av. Sánchez Carrión 1150, El Porvenir - Trujillo"},
+    {t:"La Libertad / Trujillo / Florencia de Mora",d:"Av. Pumacahua 540, Florencia de Mora"},
+    {t:"La Libertad / Trujillo / La Esperanza",d:"Av. Condorcanqui 1200, La Esperanza - Trujillo"},
+    {t:"La Libertad / Trujillo / Víctor Larco",d:"Av. Larco 1240, Víctor Larco - Trujillo"},
+    {t:"La Libertad / Trujillo / Huanchaco",d:"Jr. Unión 320, Huanchaco - Trujillo"},
+    {t:"La Libertad / Trujillo / Huamachuco",d:"Jr. Sánchez Carrión 312, Huamachuco"},
+    {t:"La Libertad / Trujillo / Chepén",d:"Jr. Grau 540, Chepén"},
+    {t:"La Libertad / Trujillo / Pacasmayo",d:"Jr. Leoncio Prado 480, Pacasmayo"},
+    {t:"La Libertad / Trujillo / Ascope",d:"Jr. Lima 210, Ascope"},
+    // ── PIURA ──
+    {t:"Piura / Piura / Piura — Jr. Loreto",d:"Jr. Loreto 480, Piura"},
+    {t:"Piura / Piura / Piura — Av. Grau",d:"Av. Grau 840, Piura"},
+    {t:"Piura / Piura / Castilla",d:"Av. Panamericana Norte Km 3, Castilla - Piura"},
+    {t:"Piura / Piura / Sullana — José de Lama",d:"Av. José de Lama 765, Sullana"},
+    {t:"Piura / Piura / Sullana — Buenos Aires",d:"Av. Buenos Aires 540, Sullana"},
+    {t:"Piura / Piura / Talara",d:"Av. Grau 410, Talara"},
+    {t:"Piura / Piura / Paita",d:"Jr. Comercio 240, Paita"},
+    {t:"Piura / Piura / Tambogrande",d:"Av. Piura 320, Tambogrande"},
+    {t:"Piura / Piura / Chulucanas",d:"Jr. Lima 560, Chulucanas"},
+    {t:"Piura / Piura / Catacaos",d:"Av. Grau 380, Catacaos"},
+    {t:"Piura / Piura / Sechura",d:"Jr. Lima 210, Sechura"},
+    // ── LAMBAYEQUE ──
     {t:"Lambayeque / Chiclayo / Chiclayo — Av. Balta",d:"Av. Balta 1220, Chiclayo"},
+    {t:"Lambayeque / Chiclayo / Chiclayo — Av. Salaverry",d:"Av. Salaverry 740, Chiclayo"},
     {t:"Lambayeque / Chiclayo / José Leonardo Ortiz",d:"Av. Salaverry 740, José L. Ortiz"},
-    {t:"Lambayeque / Chiclayo / La Victoria — Chiclayo",d:"Av. América Nro. 825, La Victoria - Chiclayo"},
-    {t:"Lambayeque / Chiclayo / Ferreñafe",          d:"Av. Tacna 315, Ferreñafe"},
-    {t:"Lambayeque / Lambayeque / Lambayeque",       d:"Av. 2 de Mayo 650, Lambayeque"},
-    // CUSCO
-    {t:"Cusco / Cusco / Cusco — Av. La Cultura",     d:"Av. La Cultura 1800, Cusco"},
-    {t:"Cusco / Cusco / San Jerónimo",               d:"Av. Collasuyo 1010, San Jerónimo - Cusco"},
-    {t:"Cusco / Cusco / Wanchaq — Av. Expresa",      d:"Av. Expresa Mz E Lt 8, Parque Industrial Wanchaq"},
-    {t:"Cusco / Espinar / Espinar",                  d:"Av. 2 de Mayo 530, Espinar - Cusco"},
-    // JUNIN
-    {t:"Junín / Huancayo / Huancayo — Av. Mariscal Castilla",d:"Av. Mariscal Castilla 2769, Huancayo"},
-    {t:"Junín / Huancayo / El Tambo",                d:"Av. Huancavelica 1560, El Tambo - Huancayo"},
-    {t:"Junín / Huancayo / Chilca",                  d:"Av. Ferrocarril 410, Chilca - Huancayo"},
-    {t:"Junín / Chanchamayo / La Merced",            d:"Jr. Tarma 280, La Merced - Chanchamayo"},
-    // SAN MARTÍN
-    {t:"San Martín / San Martín / Tarapoto",         d:"Jr. Shapaja 130, Tarapoto"},
-    {t:"San Martín / San Martín / Morales",          d:"Jr. Alfonso Ugarte 410, Morales - Tarapoto"},
-    {t:"San Martín / Moyobamba / Moyobamba",         d:"Jr. Callao 760, Moyobamba"},
-    {t:"San Martín / Rioja / Nueva Cajamarca",       d:"Jr. Gran 540, Nueva Cajamarca"},
-    // ANCASH
-    {t:"Áncash / Huaraz / Huaraz — Jr. Luzuriaga",  d:"Jr. Luzuriaga 724, Huaraz"},
-    {t:"Áncash / Santa / Chimbote",                  d:"Av. Enrique Meiggs 2457, Chimbote"},
-    {t:"Áncash / Santa / Nuevo Chimbote",            d:"Av. Country 530, Nuevo Chimbote"},
-    // LORETO
-    {t:"Loreto / Maynas / Iquitos — Av. La Marina",  d:"Av. La Marina 1560, Iquitos"},
-    {t:"Loreto / Maynas / Belén",                    d:"Jr. Progreso 820, Belén - Iquitos"},
-    // UCAYALI
-    {t:"Ucayali / Coronel Portillo / Pucallpa",      d:"Jr. Inmaculada 540, Pucallpa"},
-    {t:"Ucayali / Coronel Portillo / Yarinacocha",   d:"Jr. San Martín 210, Yarinacocha"},
-    // PUNO
-    {t:"Puno / Puno / Puno — Jr. Moquegua",          d:"Jr. Moquegua 150, Puno"},
-    {t:"Puno / San Román / Juliaca — Jr. Mama Ocllo",d:"Jr. Mama Ocllo 915-B (cruce Jr. Azángaro), Juliaca"},
-    {t:"Puno / San Román / Juliaca — Av. Huancané",  d:"Jr. Sillustani 202, San Román - Juliaca"},
-    {t:"Puno / San Román / Juliaca — Las Mercedes",  d:"Jr. Porvenir 228 Urb. Las Mercedes, Juliaca"},
-    // CAJAMARCA
-    {t:"Cajamarca / Cajamarca / Cajamarca",          d:"Jr. Del Batán 188, Cajamarca"},
-    {t:"Cajamarca / Cajamarca / Baños del Inca",     d:"Jr. Manco Cápac 540, Baños del Inca"},
-    // ICA
-    {t:"Ica / Ica / Ica",                            d:"Av. Municipalidad 420, Ica"},
-    {t:"Ica / Chincha / Chincha Alta",               d:"Av. Benavides 860, Chincha Alta"},
-    {t:"Ica / Pisco / Pisco",                        d:"Jr. Callao 340, Pisco"},
-    // TACNA
-    {t:"Tacna / Tacna / Tacna — Av. Grau",           d:"Av. Grau 410, Tacna"},
-    // MOQUEGUA
-    {t:"Moquegua / Mariscal Nieto / Moquegua",       d:"Jr. Ayacucho 310, Moquegua"},
-    {t:"Moquegua / Ilo / Ilo",                       d:"Av. Matará 520, Ilo"},
-    // HUANUCO
-    {t:"Huánuco / Huánuco / Huánuco",                d:"Jr. General Prado 840, Huánuco"},
-    // AYACUCHO
-    {t:"Ayacucho / Huamanga / Ayacucho",             d:"Jr. Asamblea 310, Huamanga - Ayacucho"},
-    // AMAZONAS
-    {t:"Amazonas / Chachapoyas / Chachapoyas",       d:"Jr. Ortiz Arrieta 560, Chachapoyas"},
-    // MADRE DE DIOS
+    {t:"Lambayeque / Chiclayo / La Victoria — Chiclayo",d:"Av. América 825, La Victoria - Chiclayo"},
+    {t:"Lambayeque / Chiclayo / Ferreñafe",d:"Av. Tacna 315, Ferreñafe"},
+    {t:"Lambayeque / Lambayeque / Lambayeque",d:"Av. 2 de Mayo 650, Lambayeque"},
+    {t:"Lambayeque / Chiclayo / Monsefú",d:"Jr. Comercio 340, Monsefú"},
+    {t:"Lambayeque / Chiclayo / Pomalca",d:"Av. Principal 120, Pomalca"},
+    // ── CUSCO ──
+    {t:"Cusco / Cusco / Cusco — Av. La Cultura",d:"Av. La Cultura 1800, Cusco"},
+    {t:"Cusco / Cusco / San Jerónimo",d:"Av. Collasuyo 1010, San Jerónimo - Cusco"},
+    {t:"Cusco / Cusco / Wanchaq",d:"Av. Expresa Mz E Lt 8, Parque Industrial Wanchaq"},
+    {t:"Cusco / Cusco / San Sebastián",d:"Av. La Cultura 3200, San Sebastián - Cusco"},
+    {t:"Cusco / Espinar / Espinar",d:"Av. 2 de Mayo 530, Espinar - Cusco"},
+    {t:"Cusco / La Convención / Quillabamba",d:"Jr. Libertad 430, Quillabamba"},
+    {t:"Cusco / Quispicanchi / Urcos",d:"Jr. Lima 210, Urcos - Quispicanchi"},
+    // ── JUNÍN ──
+    {t:"Junín / Huancayo / Huancayo — Mariscal Castilla",d:"Av. Mariscal Castilla 2769, Huancayo"},
+    {t:"Junín / Huancayo / El Tambo",d:"Av. Huancavelica 1560, El Tambo - Huancayo"},
+    {t:"Junín / Huancayo / Chilca",d:"Av. Ferrocarril 410, Chilca - Huancayo"},
+    {t:"Junín / Chanchamayo / La Merced",d:"Jr. Tarma 280, La Merced - Chanchamayo"},
+    {t:"Junín / Chanchamayo / San Ramón",d:"Jr. Palca 340, San Ramón - Chanchamayo"},
+    {t:"Junín / Satipo / Satipo",d:"Jr. Manuel Prado 420, Satipo"},
+    {t:"Junín / Tarma / Tarma",d:"Jr. Lima 560, Tarma"},
+    {t:"Junín / Yauli / La Oroya",d:"Av. Lima 340, La Oroya"},
+    // ── SAN MARTÍN ──
+    {t:"San Martín / San Martín / Tarapoto — Jr. Shapaja",d:"Jr. Shapaja 130, Tarapoto"},
+    {t:"San Martín / San Martín / Morales",d:"Jr. Alfonso Ugarte 410, Morales - Tarapoto"},
+    {t:"San Martín / Moyobamba / Moyobamba",d:"Jr. Callao 760, Moyobamba"},
+    {t:"San Martín / Rioja / Nueva Cajamarca",d:"Jr. Gran 540, Nueva Cajamarca"},
+    {t:"San Martín / Rioja / Rioja",d:"Jr. Grau 340, Rioja"},
+    {t:"San Martín / Bellavista / Bellavista",d:"Jr. Dos de Mayo 280, Bellavista"},
+    {t:"San Martín / Picota / Picota",d:"Jr. San Martín 210, Picota"},
+    {t:"San Martín / El Dorado / San José de Sisa",d:"Jr. Lima 180, San José de Sisa"},
+    // ── ÁNCASH ──
+    {t:"Áncash / Huaraz / Huaraz — Jr. Luzuriaga",d:"Jr. Luzuriaga 724, Huaraz"},
+    {t:"Áncash / Santa / Chimbote — Av. Meiggs",d:"Av. Enrique Meiggs 2457, Chimbote"},
+    {t:"Áncash / Santa / Nuevo Chimbote",d:"Av. Country 530, Nuevo Chimbote"},
+    {t:"Áncash / Santa / Chimbote — Villa María",d:"Av. Villa María 640, Chimbote"},
+    {t:"Áncash / Casma / Casma",d:"Jr. Huarmey 210, Casma"},
+    {t:"Áncash / Huari / Huari",d:"Jr. Lima 320, Huari"},
+    {t:"Áncash / Recuay / Recuay",d:"Jr. Comercio 140, Recuay"},
+    // ── LORETO ──
+    {t:"Loreto / Maynas / Iquitos — Av. La Marina",d:"Av. La Marina 1560, Iquitos"},
+    {t:"Loreto / Maynas / Iquitos — Belén",d:"Jr. Progreso 820, Belén - Iquitos"},
+    {t:"Loreto / Maynas / Iquitos — San Juan",d:"Av. Abelardo Quiñones Km 3, San Juan - Iquitos"},
+    {t:"Loreto / Requena / Requena",d:"Jr. Lima 340, Requena"},
+    // ── UCAYALI ──
+    {t:"Ucayali / Coronel Portillo / Pucallpa — Jr. Inmaculada",d:"Jr. Inmaculada 540, Pucallpa"},
+    {t:"Ucayali / Coronel Portillo / Yarinacocha",d:"Jr. San Martín 210, Yarinacocha - Pucallpa"},
+    {t:"Ucayali / Coronel Portillo / Pucallpa — Túpac Amaru",d:"Av. Túpac Amaru 1240, Pucallpa"},
+    // ── PUNO ──
+    {t:"Puno / Puno / Puno — Jr. Moquegua",d:"Jr. Moquegua 150, Puno"},
+    {t:"Puno / San Román / Juliaca — Jr. Mama Ocllo",d:"Jr. Mama Ocllo 915-B, Juliaca"},
+    {t:"Puno / San Román / Juliaca — Av. Huancané",d:"Jr. Sillustani 202, Juliaca"},
+    {t:"Puno / San Román / Juliaca — Las Mercedes",d:"Jr. Porvenir 228 Urb. Las Mercedes, Juliaca"},
+    {t:"Puno / El Collao / Ilave",d:"Jr. 2 de Mayo 340, Ilave - Puno"},
+    {t:"Puno / Chucuito / Juli",d:"Jr. Lima 180, Juli - Puno"},
+    {t:"Puno / Azángaro / Azángaro",d:"Jr. Lima 420, Azángaro - Puno"},
+    // ── CAJAMARCA ──
+    {t:"Cajamarca / Cajamarca / Cajamarca — Jr. Del Batán",d:"Jr. Del Batán 188, Cajamarca"},
+    {t:"Cajamarca / Cajamarca / Baños del Inca",d:"Jr. Manco Cápac 540, Baños del Inca"},
+    {t:"Cajamarca / Jaén / Jaén",d:"Av. Mesones Muro 640, Jaén"},
+    {t:"Cajamarca / San Ignacio / San Ignacio",d:"Jr. San Martín 320, San Ignacio"},
+    {t:"Cajamarca / Chota / Chota",d:"Jr. Cajamarca 280, Chota"},
+    {t:"Cajamarca / Cutervo / Cutervo",d:"Jr. Grau 210, Cutervo"},
+    // ── ICA ──
+    {t:"Ica / Ica / Ica — Av. Municipalidad",d:"Av. Municipalidad 420, Ica"},
+    {t:"Ica / Ica / Ica — Los Maestros",d:"Av. Los Maestros 340, Ica"},
+    {t:"Ica / Chincha / Chincha Alta",d:"Av. Benavides 860, Chincha Alta"},
+    {t:"Ica / Pisco / Pisco",d:"Jr. Callao 340, Pisco"},
+    {t:"Ica / Nazca / Nazca",d:"Jr. Lima 240, Nazca"},
+    {t:"Ica / Palpa / Palpa",d:"Jr. Grau 180, Palpa"},
+    // ── TACNA ──
+    {t:"Tacna / Tacna / Tacna — Av. Grau",d:"Av. Grau 410, Tacna"},
+    {t:"Tacna / Tacna / Tacna — Av. Bolognesi",d:"Av. Bolognesi 790, Tacna"},
+    {t:"Tacna / Tacna / Ciudad Nueva",d:"Av. Internacional 340, Ciudad Nueva - Tacna"},
+    {t:"Tacna / Tacna / Gregorio Albarracín",d:"Av. Jorge Basadre 680, Gregorio Albarracín - Tacna"},
+    // ── MOQUEGUA ──
+    {t:"Moquegua / Mariscal Nieto / Moquegua",d:"Jr. Ayacucho 310, Moquegua"},
+    {t:"Moquegua / Ilo / Ilo",d:"Av. Matará 520, Ilo"},
+    {t:"Moquegua / General Sánchez Cerro / Omate",d:"Jr. Lima 180, Omate - Moquegua"},
+    // ── HUÁNUCO ──
+    {t:"Huánuco / Huánuco / Huánuco — Jr. General Prado",d:"Jr. General Prado 840, Huánuco"},
+    {t:"Huánuco / Huánuco / Huánuco — Av. Universitaria",d:"Av. Universitaria 340, Huánuco"},
+    {t:"Huánuco / Leoncio Prado / Tingo María",d:"Jr. Monzón 420, Tingo María"},
+    // ── AYACUCHO ──
+    {t:"Ayacucho / Huamanga / Ayacucho — Jr. Asamblea",d:"Jr. Asamblea 310, Ayacucho"},
+    {t:"Ayacucho / Huamanga / Ayacucho — Av. Mariscal Cáceres",d:"Av. Mariscal Cáceres 540, Ayacucho"},
+    {t:"Ayacucho / Huanta / Huanta",d:"Jr. Lima 280, Huanta"},
+    // ── AMAZONAS ──
+    {t:"Amazonas / Chachapoyas / Chachapoyas",d:"Jr. Ortiz Arrieta 560, Chachapoyas"},
+    {t:"Amazonas / Bagua / Bagua Grande",d:"Jr. Grau 340, Bagua Grande"},
+    {t:"Amazonas / Utcubamba / Bagua",d:"Jr. Amazonas 210, Bagua"},
+    // ── MADRE DE DIOS ──
     {t:"Madre de Dios / Tambopata / Puerto Maldonado",d:"Jr. Fitzcarrald 490, Puerto Maldonado"},
-    // APURIMAC
-    {t:"Apurímac / Andahuaylas / Andahuaylas",       d:"Av. Los Cedros 274, Andahuaylas"},
-    {t:"Apurímac / Cotabambas / Challhuahuacho",     d:"Barrio Wichaypampa Lt. 13-15-16, Challhuahuacho"},
-    // TUMBES
-    {t:"Tumbes / Tumbes / Tumbes",                   d:"Av. Tumbes Norte 420, Tumbes"},
+    // ── APURÍMAC ──
+    {t:"Apurímac / Andahuaylas / Andahuaylas",d:"Av. Los Cedros 274, Andahuaylas"},
+    {t:"Apurímac / Cotabambas / Challhuahuacho",d:"Barrio Wichaypampa Lt. 13-15-16, Challhuahuacho"},
+    {t:"Apurímac / Abancay / Abancay",d:"Av. Arenas 560, Abancay"},
+    // ── TUMBES ──
+    {t:"Tumbes / Tumbes / Tumbes — Av. Tumbes Norte",d:"Av. Tumbes Norte 420, Tumbes"},
+    {t:"Tumbes / Zarumilla / Zarumilla",d:"Jr. Comercio 180, Zarumilla"},
+    // ── PASCO ──
+    {t:"Pasco / Pasco / Cerro de Pasco",d:"Jr. Huánuco 340, Cerro de Pasco"},
+    {t:"Pasco / Oxapampa / Oxapampa",d:"Jr. Grau 210, Oxapampa"},
+    // ── HUANCAVELICA ──
+    {t:"Huancavelica / Huancavelica / Huancavelica",d:"Jr. Virrey Toledo 340, Huancavelica"},
+    // ── SAN MARTÍN ADICIONALES ──
+    {t:"San Martín / Mariscal Cáceres / Juanjuí",d:"Jr. San Martín 320, Juanjuí"},
+    {t:"San Martín / Tocache / Tocache",d:"Jr. Lima 240, Tocache"}
   ],
-
   olva: [
-    // LIMA
-    {t:"Lima / Lima / Miraflores",                   d:"Av. Larco 345, Miraflores"},
-    {t:"Lima / Lima / San Isidro",                   d:"Av. Javier Prado Este 1230, San Isidro"},
-    {t:"Lima / Lima / San Borja",                    d:"Av. San Borja Norte 800, San Borja"},
-    {t:"Lima / Lima / Surquillo",                    d:"Av. Tomás Marsano 2140, Surquillo"},
-    {t:"Lima / Lima / Pueblo Libre",                 d:"Av. Brasil 2750, Pueblo Libre"},
-    {t:"Lima / Lima / Jesús María",                  d:"Av. Jesús María 310, Jesús María"},
-    {t:"Lima / Lima / San Miguel",                   d:"Av. La Mar 1280, San Miguel"},
-    {t:"Lima / Lima / La Molina",                    d:"Av. La Molina 610, La Molina"},
-    {t:"Lima / Lima / Santiago de Surco",            d:"Av. Caminos del Inca 1840, Surco"},
-    {t:"Lima / Lima / Lince",                        d:"Av. Arequipa 2650, Lince"},
-    {t:"Lima / Lima / Barranco",                     d:"Av. Grau 980, Barranco"},
-    {t:"Lima / Lima / Chorrillos",                   d:"Av. Guardia Civil 1260, Chorrillos"},
-    {t:"Lima / Lima / SJL",                          d:"Av. Próceres de la Independencia 2040, SJL"},
-    {t:"Lima / Lima / Los Olivos",                   d:"Av. Alfredo Mendiola 3698, Los Olivos"},
-    {t:"Lima / Lima / San Martín de Porres",         d:"Av. Canta Callao 1050, SMP"},
-    {t:"Lima / Lima / Ate",                          d:"Av. Nicolás Ayllon 2340, Ate"},
-    {t:"Lima / Callao / Callao",                     d:"Av. Sáenz Peña 650, Callao"},
-    {t:"Lima / Callao / Bellavista",                 d:"Jr. Colina 440, Bellavista - Callao"},
-    // AREQUIPA
-    {t:"Arequipa / Arequipa / Arequipa",             d:"Av. Goyeneche 120, Arequipa"},
-    {t:"Arequipa / Arequipa / Cayma",                d:"Av. Ejército 1009, Cayma - Arequipa"},
-    // LA LIBERTAD
-    {t:"La Libertad / Trujillo / Trujillo",          d:"Jr. Diego de Almagro 540, Trujillo"},
-    {t:"La Libertad / Trujillo / El Porvenir",       d:"Av. Pumacahua 320, El Porvenir"},
-    // PIURA
-    {t:"Piura / Piura / Piura",                      d:"Av. Grau 212, Piura"},
-    {t:"Piura / Piura / Sullana",                    d:"Av. Buenos Aires 540, Sullana"},
-    // LAMBAYEQUE
-    {t:"Lambayeque / Chiclayo / Chiclayo",           d:"Calle 7 de Enero 880, Chiclayo"},
-    // CUSCO
-    {t:"Cusco / Cusco / Cusco",                      d:"Av. El Sol 900, Cusco"},
-    // JUNIN
-    {t:"Junín / Huancayo / Huancayo",                d:"Jr. Huancas 230, Huancayo"},
-    // ANCASH
-    {t:"Áncash / Santa / Chimbote",                  d:"Av. Gálvez 510, Chimbote"},
-    // ICA
-    {t:"Ica / Ica / Ica",                            d:"Jr. Lima 340, Ica"},
-    // TACNA
-    {t:"Tacna / Tacna / Tacna",                      d:"Av. Bolognesi 790, Tacna"},
+    // ── LIMA ──
+    {t:"Lima / Lima / Miraflores — Av. Larco",d:"Av. Larco 345, Miraflores"},
+    {t:"Lima / Lima / Miraflores — Av. Benavides",d:"Av. Benavides 1180, Miraflores"},
+    {t:"Lima / Lima / San Isidro — Javier Prado",d:"Av. Javier Prado Este 1230, San Isidro"},
+    {t:"Lima / Lima / San Isidro — Petit Thouars",d:"Av. Petit Thouars 3440, San Isidro"},
+    {t:"Lima / Lima / San Borja",d:"Av. San Borja Norte 800, San Borja"},
+    {t:"Lima / Lima / Surquillo",d:"Av. Tomás Marsano 2140, Surquillo"},
+    {t:"Lima / Lima / Pueblo Libre",d:"Av. Brasil 2750, Pueblo Libre"},
+    {t:"Lima / Lima / Jesús María",d:"Av. Jesús María 310, Jesús María"},
+    {t:"Lima / Lima / San Miguel — Av. La Mar",d:"Av. La Mar 1280, San Miguel"},
+    {t:"Lima / Lima / San Miguel — Av. Universitaria",d:"Av. Universitaria 1820, San Miguel"},
+    {t:"Lima / Lima / La Molina",d:"Av. La Molina 610, La Molina"},
+    {t:"Lima / Lima / Santiago de Surco — Caminos del Inca",d:"Av. Caminos del Inca 1840, Surco"},
+    {t:"Lima / Lima / Santiago de Surco — Primavera",d:"Av. Primavera 1240, Surco"},
+    {t:"Lima / Lima / Lince",d:"Av. Arequipa 2650, Lince"},
+    {t:"Lima / Lima / Barranco",d:"Av. Grau 980, Barranco"},
+    {t:"Lima / Lima / Chorrillos",d:"Av. Guardia Civil 1260, Chorrillos"},
+    {t:"Lima / Lima / San Juan de Lurigancho — Próceres",d:"Av. Próceres de la Independencia 2040, SJL"},
+    {t:"Lima / Lima / San Juan de Lurigancho — Gran Chimú",d:"Av. Gran Chimú 680, SJL"},
+    {t:"Lima / Lima / Los Olivos — Mendiola",d:"Av. Alfredo Mendiola 3698, Los Olivos"},
+    {t:"Lima / Lima / Los Olivos — Las Palmeras",d:"Av. Las Palmeras 4250, Los Olivos"},
+    {t:"Lima / Lima / San Martín de Porres — Canta Callao",d:"Av. Canta Callao 1050, SMP"},
+    {t:"Lima / Lima / San Martín de Porres — Universitaria",d:"Av. Universitaria 2800, SMP"},
+    {t:"Lima / Lima / Ate — Nicolás Ayllón",d:"Av. Nicolás Ayllón 2340, Ate"},
+    {t:"Lima / Lima / Ate — Carretera Central",d:"Carretera Central Km 8, Ate"},
+    {t:"Lima / Lima / Santa Anita",d:"Av. Los Eucaliptos 540, Santa Anita"},
+    {t:"Lima / Lima / La Victoria — Aviación",d:"Av. Aviación 2850, La Victoria"},
+    {t:"Lima / Lima / Independencia",d:"Av. Túpac Amaru 3980, Independencia"},
+    {t:"Lima / Lima / Comas",d:"Av. Universitaria Norte 5980, Comas"},
+    {t:"Lima / Lima / Villa El Salvador",d:"Av. César Vallejo 1340, Villa El Salvador"},
+    {t:"Lima / Lima / Villa María del Triunfo",d:"Av. Pachacútec 2650, VMT"},
+    {t:"Lima / Lima / San Juan de Miraflores",d:"Av. San Juan 1340, SJM"},
+    {t:"Lima / Lima / Breña",d:"Av. Arica 540, Breña"},
+    {t:"Lima / Lima / Magdalena del Mar",d:"Av. Brasil 3240, Magdalena"},
+    {t:"Lima / Callao / Callao — Sáenz Peña",d:"Av. Sáenz Peña 650, Callao"},
+    {t:"Lima / Callao / Bellavista",d:"Jr. Colina 440, Bellavista - Callao"},
+    {t:"Lima / Callao / Ventanilla",d:"Av. Gambetta 8200, Ventanilla"},
+    // ── AREQUIPA ──
+    {t:"Arequipa / Arequipa / Cercado — Goyeneche",d:"Av. Goyeneche 120, Arequipa"},
+    {t:"Arequipa / Arequipa / Cayma",d:"Av. Ejército 1009, Cayma - Arequipa"},
+    {t:"Arequipa / Arequipa / Paucarpata",d:"Av. Paucarpata 680, Paucarpata - Arequipa"},
+    {t:"Arequipa / Arequipa / Cerro Colorado",d:"Av. Aviación 1240, Cerro Colorado - Arequipa"},
+    // ── LA LIBERTAD ──
+    {t:"La Libertad / Trujillo / Trujillo — Diego de Almagro",d:"Jr. Diego de Almagro 540, Trujillo"},
+    {t:"La Libertad / Trujillo / Trujillo — España",d:"Av. España 1640, Trujillo"},
+    {t:"La Libertad / Trujillo / El Porvenir",d:"Av. Pumacahua 320, El Porvenir - Trujillo"},
+    {t:"La Libertad / Trujillo / La Esperanza",d:"Av. Condorcanqui 980, La Esperanza - Trujillo"},
+    // ── PIURA ──
+    {t:"Piura / Piura / Piura — Av. Grau",d:"Av. Grau 212, Piura"},
+    {t:"Piura / Piura / Sullana",d:"Av. Buenos Aires 540, Sullana"},
+    {t:"Piura / Piura / Castilla",d:"Av. Panamericana Norte Km 4, Castilla"},
+    // ── LAMBAYEQUE ──
+    {t:"Lambayeque / Chiclayo / Chiclayo — 7 de Enero",d:"Calle 7 de Enero 880, Chiclayo"},
+    {t:"Lambayeque / Chiclayo / Chiclayo — Balta",d:"Av. Balta 980, Chiclayo"},
+    {t:"Lambayeque / Chiclayo / José Leonardo Ortiz",d:"Av. Chiclayo 840, José L. Ortiz"},
+    // ── CUSCO ──
+    {t:"Cusco / Cusco / Cusco — Av. El Sol",d:"Av. El Sol 900, Cusco"},
+    {t:"Cusco / Cusco / Wanchaq",d:"Av. La Cultura 2240, Wanchaq - Cusco"},
+    // ── JUNÍN ──
+    {t:"Junín / Huancayo / Huancayo — Jr. Huancas",d:"Jr. Huancas 230, Huancayo"},
+    {t:"Junín / Huancayo / El Tambo",d:"Av. Huancavelica 1890, El Tambo"},
+    // ── ÁNCASH ──
+    {t:"Áncash / Santa / Chimbote — Av. Gálvez",d:"Av. Gálvez 510, Chimbote"},
+    {t:"Áncash / Santa / Nuevo Chimbote",d:"Av. Country 840, Nuevo Chimbote"},
+    // ── ICA ──
+    {t:"Ica / Ica / Ica",d:"Jr. Lima 340, Ica"},
+    {t:"Ica / Chincha / Chincha Alta",d:"Av. Benavides 640, Chincha Alta"},
+    // ── TACNA ──
+    {t:"Tacna / Tacna / Tacna — Bolognesi",d:"Av. Bolognesi 790, Tacna"},
+    {t:"Tacna / Tacna / Tacna — Av. Grau",d:"Av. Grau 540, Tacna"},
+    // ── PUNO ──
+    {t:"Puno / San Román / Juliaca",d:"Jr. Mama Ocllo 680, Juliaca"},
+    {t:"Puno / Puno / Puno",d:"Jr. Moquegua 340, Puno"},
+    // ── CAJAMARCA ──
+    {t:"Cajamarca / Cajamarca / Cajamarca",d:"Jr. Del Batán 340, Cajamarca"},
+    {t:"Cajamarca / Jaén / Jaén",d:"Av. Mesones Muro 480, Jaén"},
+    // ── LORETO ──
+    {t:"Loreto / Maynas / Iquitos",d:"Av. La Marina 1240, Iquitos"},
+    // ── SAN MARTÍN ──
+    {t:"San Martín / San Martín / Tarapoto",d:"Jr. Shapaja 340, Tarapoto"},
+    // ── HUÁNUCO ──
+    {t:"Huánuco / Huánuco / Huánuco",d:"Jr. General Prado 680, Huánuco"},
+    // ── AYACUCHO ──
+    {t:"Ayacucho / Huamanga / Ayacucho",d:"Jr. Asamblea 480, Ayacucho"},
+    // ── UCAYALI ──
+    {t:"Ucayali / Coronel Portillo / Pucallpa",d:"Jr. Inmaculada 680, Pucallpa"},
+    // ── MOQUEGUA ──
+    {t:"Moquegua / Mariscal Nieto / Moquegua",d:"Jr. Ayacucho 480, Moquegua"},
+    {t:"Moquegua / Ilo / Ilo",d:"Av. Matará 340, Ilo"}
   ]
 };
 
@@ -779,7 +918,7 @@ function enviarWA() {
   const obs   = document.getElementById('obs').value.trim();
   const tipoLabel = tipo==='shalom' ? 'Agencia Shalom' : tipo==='olva' ? 'Olva Courier' : 'Delivery Lima';
 
-  let msg = `📦 *NUEVO ENVÍO — Mara Store*\n\n`;
+  let msg = `📦 *NUEVO ENVÍO — Criz Closet*\n\n`;
   msg += `👤 ${nom}\n📱 +51 ${wa}\n🚚 ${tipoLabel}\n`;
 
   if (tipo === 'shalom' && sel.shalom) {
@@ -796,7 +935,7 @@ function enviarWA() {
   if (fecha) msg += `📅 Fecha: ${fecha}\n`;
   if (obs)   msg += `💬 ${obs}`;
 
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  window.open('https://wa.me/51958344922?text=' + encodeURIComponent(msg), '_blank');
 }
 
 function resetForm() {

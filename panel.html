@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel de Pedidos — Mara Store</title>
+  <title>Panel de Pedidos — Criz Closet</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
@@ -117,6 +117,7 @@
     }
     .act { flex: 1; height: 32px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); font-size: 12px; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-family: inherit; }
     .act:hover { background: var(--bg); }
+    .act { font-size: 12px; line-height: 1; }
     .act.wa  { border-color: #22c55e; color: #16a34a; }
     .act.wa:hover  { background: #f0fdf4; }
     .act.tel { border-color: var(--brand); color: var(--brand); }
@@ -195,7 +196,7 @@
       <div class="logo">📦</div>
       <div>
         <h1>Panel de pedidos</h1>
-        <p>Mara Store</p>
+        <p>Criz Closet</p>
       </div>
     </div>
     <div style="display:flex;align-items:center;gap:8px">
@@ -243,7 +244,7 @@
   <!-- Lista -->
   <div class="list" id="lista"></div>
 
-  <div class="footer">Panel de pedidos · Mara Store</div>
+  <div class="footer">Panel de pedidos · Criz Closet</div>
 </div>
 
 <!-- Modal -->
@@ -459,8 +460,8 @@ function cambiarEstado(i, v) {
 
 function abrirWA(i) {
   const p = pedidos[i];
-  const msg = `Hola ${p.nombre.split(' ')[0]} 👋, te escribimos de Mara Store.\nTu pedido está en estado: *${p.estado}*.\n${p.agencia ? 'Agencia: ' + p.agencia + '\n' : ''}Cualquier duda estamos aquí 🙌`;
-  window.open('https://wa.me/51' + p.wa + '?text=' + encodeURIComponent(msg), '_blank');
+  const msg = `Hola ${p.nombre.split(' ')[0]} 👋, te escribimos de Criz Closet.\nTu pedido está en estado: *${p.estado}*.\n${p.agencia ? 'Agencia: ' + p.agencia + '\n' : ''}Cualquier duda estamos aquí 🙌`;
+  window.open('https://wa.me/51958344922?text=' + encodeURIComponent(msg), '_blank');
 }
 
 function llamar(i) { window.location.href = 'tel:+51' + pedidos[i].wa; }
@@ -574,7 +575,7 @@ sincronizar();
 <script>
 function imprimirTicket(i) {
   const p = pedidos[i];
-  const tienda = 'Mara Store';
+  const tienda = 'Criz Closet';
   const nombre = (p.nombre || '').toUpperCase();
   const tel    = p.wa || '';
   const tipo   = p.tipo === 'shalom' ? 'SHALOM' : p.tipo === 'olva' ? 'OLVA COURIER' : 'DELIVERY LIMA';
