@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Pedidos — Mara Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --brand: #3b7de8;
+      --brand-dark: #2563eb;
+      --green: #22c55e;
+      --green-dark: #16a34a;
+      --bg: #f5f5f0;
+      --surface: #ffffff;
+      --border: #e2e2dc;
+      --text: #1a1a18;
+      --muted: #6b6b65;
+      --radius: 10px;
+      --radius-lg: 14px;
+    }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 1rem 1rem 3rem;
+    }
+    .container { max-width: 480px; margin: 0 auto; }
+
+    /* Header */
+    .header {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: .9rem 1.1rem;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .header-left { display: flex; align-items: center; gap: 10px; }
+    .logo { width: 36px; height: 36px; background: #eef3fd; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .header h1 { font-size: 15px; font-weight: 600; }
+    .header p  { font-size: 11px; color: var(--muted); }
+    .header-date { font-size: 12px; color: var(--muted); }
+
+    /* Stats */
+    .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 1rem; }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: .8rem 1rem;
+    }
+    .stat-n { font-size: 26px; font-weight: 600; line-height: 1; }
+    .stat-l { font-size: 11px; color: var(--muted); margin-top: 3px; }
+    .amber { color: #BA7517; }
+    .blue  { color: #185FA5; }
+    .purple{ color: #534AB7; }
+    .green2{ color: #3B6D11; }
+
+    /* Toolbar */
+    .toolbar { display: flex; gap: 6px; margin-bottom: .75rem; flex-wrap: wrap; }
+    .search-w { position: relative; flex: 1; min-width: 120px; }
+    .search-w svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; stroke: var(--muted); fill: none; pointer-events: none; }
+    .search-w input {
+      width: 100%; height: 36px;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 0 10px 0 32px; font-size: 13px;
+      color: var(--text); background: var(--surface);
+      font-family: inherit; outline: none;
+    }
+    .search-w input:focus { border-color: var(--brand); }
+    select.fil {
+      height: 36px; border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 0 26px 0 10px; font-size: 12px; color: var(--text);
+      background: var(--surface); outline: none; font-family: inherit;
+      appearance: none; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%236b6b65' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 9px center;
+    }
+    .btn-new {
+      height: 36px; padding: 0 14px;
+      background: var(--brand); color: #fff;
+      border: none; border-radius: var(--radius);
+      font-size: 13px; font-weight: 500; cursor: pointer;
+      display: flex; align-items: center; gap: 5px;
+      font-family: inherit; white-space: nowrap;
+    }
+    .btn-new:hover { background: var(--brand-dark); }
+
+    /* Cards */
+    .list { display: flex; flex-direction: column; gap: 8px; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 12px 14px;
+    }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+    .card-name { font-size: 14px; font-weight: 600; }
+    .card-prod { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .badge { display: inline-flex; align-items: center; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+    .b-pend { background: #FAEEDA; color: #854F0B; }
+    .b-emp  { background: #E6F1FB; color: #185FA5; }
+    .b-env  { background: #EEEDFE; color: #3C3489; }
+    .b-ent  { background: #EAF3DE; color: #3B6D11; }
+    .card-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .meta-item { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--muted); }
+    .meta-item svg { width: 13px; height: 13px; stroke: var(--muted); fill: none; flex-shrink: 0; }
+    .card-agencia { font-size: 12px; color: var(--muted); margin-top: 5px; display: flex; align-items: flex-start; gap: 4px; }
+    .card-agencia svg { width: 13px; height: 13px; stroke: var(--muted); fill: none; flex-shrink: 0; margin-top: 1px; }
+    .card-actions {
+      display: flex; gap: 6px; margin-top: 10px; padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .act { flex: 1; height: 32px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); font-size: 12px; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-family: inherit; }
+    .act:hover { background: var(--bg); }
+    .act.wa  { border-color: #22c55e; color: #16a34a; }
+    .act.wa:hover  { background: #f0fdf4; }
+    .act.tel { border-color: var(--brand); color: var(--brand); }
+    .act.tel:hover { background: #eef3fd; }
+    .status-sel {
+      font-size: 12px; border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 0 22px 0 7px; height: 30px;
+      background: var(--surface); color: var(--text);
+      cursor: pointer; font-family: inherit; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%236b6b65' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 6px center;
+    }
+    .empty { text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-size: 13px; }
+
+    /* Modal */
+    .overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.4);
+      display: flex; align-items: flex-end; justify-content: center;
+      z-index: 200; display: none;
+    }
+    .overlay.open { display: flex; }
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      padding: 1.25rem 1rem 2rem;
+      width: 100%; max-width: 480px;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .modal-head h2 { font-size: 15px; font-weight: 600; }
+    .close-btn { background: none; border: none; cursor: pointer; font-size: 20px; color: var(--muted); padding: 0; }
+    .mfield { margin-bottom: 10px; }
+    .mfield label { display: block; font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 4px; }
+    .mfield input, .mfield select, .mfield textarea {
+      width: 100%; border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 8px 10px; font-size: 13px; color: var(--text);
+      background: var(--surface); outline: none; font-family: inherit;
+    }
+    .mfield input:focus, .mfield select:focus, .mfield textarea:focus { border-color: var(--brand); }
+    .mfield textarea { resize: vertical; min-height: 56px; }
+    .mrow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .modal-btns { display: flex; gap: 8px; margin-top: 14px; }
+    .mbtn { flex: 1; height: 40px; border-radius: var(--radius); font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit; border: none; }
+    .mbtn.pri { background: var(--brand); color: #fff; }
+    .mbtn.pri:hover { background: var(--brand-dark); }
+    .mbtn.sec { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+    .mbtn.danger { background: #fee2e2; color: #991b1b; }
+    .mbtn.danger:hover { background: #fecaca; }
+
+    /* Link al formulario */
+    .link-form {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px 12px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1rem; font-size: 12px; color: var(--muted);
+    }
+    .link-form a { color: var(--brand); text-decoration: none; font-weight: 500; font-size: 12px; }
+    .link-form a:hover { text-decoration: underline; }
+    .footer { text-align: center; font-size: 11px; color: var(--muted); margin-top: 1.5rem; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">📦</div>
+      <div>
+        <h1>Panel de pedidos</h1>
+        <p>Mara Store</p>
+      </div>
+    </div>
+    <span class="header-date" id="fecha-hoy"></span>
+  </div>
+
+  <!-- Link rápido al formulario -->
+  <div class="link-form">
+    <span>🔗 Formulario del cliente:</span>
+    <a href="index.html" target="_blank">Abrir formulario</a>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat"><div class="stat-n amber" id="s-pend">0</div><div class="stat-l">Pendientes</div></div>
+    <div class="stat"><div class="stat-n blue"  id="s-emp">0</div><div class="stat-l">Empacados</div></div>
+    <div class="stat"><div class="stat-n purple" id="s-env">0</div><div class="stat-l">Enviados</div></div>
+    <div class="stat"><div class="stat-n green2" id="s-ent">0</div><div class="stat-l">Entregados</div></div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-w">
+      <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="buscar" placeholder="Buscar nombre, WhatsApp..." oninput="render()">
+    </div>
+    <select class="fil" id="fil-estado" onchange="render()">
+      <option value="">Todos</option>
+      <option value="Pendiente">Pendiente</option>
+      <option value="Empacado">Empacado</option>
+      <option value="Enviado">Enviado</option>
+      <option value="Entregado">Entregado</option>
+    </select>
+    <select class="fil" id="fil-tipo" onchange="render()">
+      <option value="">Todos</option>
+      <option value="shalom">Shalom</option>
+      <option value="olva">Olva</option>
+      <option value="delivery">Delivery</option>
+    </select>
+    <button class="btn-new" onclick="abrirModal()">+ Nuevo</button>
+  </div>
+
+  <!-- Lista -->
+  <div class="list" id="lista"></div>
+
+  <div class="footer">Panel de pedidos · Mara Store</div>
+</div>
+
+<!-- Modal -->
+<div class="overlay" id="overlay" onclick="cerrarBg(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="modal-titulo">Nuevo pedido</h2>
+      <button class="close-btn" onclick="cerrarModal()" aria-label="Cerrar">×</button>
+    </div>
+
+    <div class="mrow">
+      <div class="mfield">
+        <label>Nombre y Apellidos *</label>
+        <input type="text" id="m-nombre" placeholder="Nombre completo">
+      </div>
+      <div class="mfield">
+        <label>WhatsApp *</label>
+        <input type="tel" id="m-wa" placeholder="987654321" maxlength="9" oninput="autoFill()">
+      </div>
+    </div>
+
+    <div class="mfield">
+      <label>Producto</label>
+      <input type="text" id="m-prod" placeholder="Ej: Polo oversize negro — talla M">
+    </div>
+
+    <div class="mrow">
+      <div class="mfield">
+        <label>Tipo de envío *</label>
+        <select id="m-tipo">
+          <option value="shalom">Agencia Shalom</option>
+          <option value="olva">Olva Courier</option>
+          <option value="delivery">Delivery Lima</option>
+        </select>
+      </div>
+      <div class="mfield">
+        <label>DNI / CE</label>
+        <input type="text" id="m-dni" placeholder="Solo agencias" maxlength="12">
+      </div>
+    </div>
+
+    <div class="mfield">
+      <label>Agencia / Dirección</label>
+      <input type="text" id="m-agencia" placeholder="Nombre de agencia o dirección">
+    </div>
+
+    <div class="mrow">
+      <div class="mfield">
+        <label>Fecha de envío</label>
+        <input type="date" id="m-fecha">
+      </div>
+      <div class="mfield">
+        <label>Estado</label>
+        <select id="m-estado">
+          <option value="Pendiente">Pendiente</option>
+          <option value="Empacado">Empacado</option>
+          <option value="Enviado">Enviado</option>
+          <option value="Entregado">Entregado</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mfield">
+      <label>Observaciones</label>
+      <textarea id="m-obs" placeholder="Notas internas sobre el pedido..."></textarea>
+    </div>
+
+    <div class="modal-btns">
+      <button class="mbtn sec" onclick="cerrarModal()">Cancelar</button>
+      <button class="mbtn danger hidden" id="btn-eliminar" onclick="eliminarPedido()">Eliminar</button>
+      <button class="mbtn pri" onclick="guardar()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const K_P = 'ms_pedidos';
+const K_C = 'ms_clientes';
+const get = k => { try { return JSON.parse(localStorage.getItem(k) || (k===K_P?'[]':'{}')) } catch(e) { return k===K_P?[]:{} } };
+const save = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+
+let pedidos = get(K_P);
+let editIdx = null;
+let nextId  = pedidos.length ? Math.max(...pedidos.map(p => p.id||0)) + 1 : 1;
+
+// Fecha header
+const hoy = new Date();
+document.getElementById('fecha-hoy').textContent = hoy.toLocaleDateString('es-PE',{weekday:'short',day:'numeric',month:'short'});
+
+// ── Stats ──────────────────────────────────────────────
+function stats() {
+  document.getElementById('s-pend').textContent = pedidos.filter(p=>p.estado==='Pendiente').length;
+  document.getElementById('s-emp').textContent  = pedidos.filter(p=>p.estado==='Empacado').length;
+  document.getElementById('s-env').textContent  = pedidos.filter(p=>p.estado==='Enviado').length;
+  document.getElementById('s-ent').textContent  = pedidos.filter(p=>p.estado==='Entregado').length;
+}
+
+// ── Badge ─────────────────────────────────────────────
+function badge(e) {
+  const m = {Pendiente:'b-pend',Empacado:'b-emp',Enviado:'b-env',Entregado:'b-ent'};
+  return `<span class="badge ${m[e]||'b-pend'}">${e}</span>`;
+}
+function tipoLabel(t) { return t==='shalom'?'Shalom':t==='olva'?'Olva Courier':'Delivery Lima'; }
+
+// ── SVG icons ─────────────────────────────────────────
+const ico = {
+  wa:   `<svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`,
+  tel:  `<svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.6 19.79 19.79 0 0 1 1.61 5c-.06-1.09.77-2 1.85-2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.91a16 16 0 0 0 6 6l.72-.72a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+  edit: `<svg viewBox="0 0 24 24" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+  pin:  `<svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+  cal:  `<svg viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+  pkg:  `<svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 10V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10"/><path d="M1 6l11-4 11 4v4H1z"/><line x1="12" y1="22" x2="12" y2="6"/></svg>`,
+  box:  `<svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>`,
+};
+
+// ── Render lista ──────────────────────────────────────
+function render() {
+  const q  = document.getElementById('buscar').value.toLowerCase();
+  const fe = document.getElementById('fil-estado').value;
+  const ft = document.getElementById('fil-tipo').value;
+  let f = pedidos.filter(p => {
+    const m = !q || p.nombre.toLowerCase().includes(q) || p.wa.includes(q) || (p.prod||'').toLowerCase().includes(q);
+    return m && (!fe||p.estado===fe) && (!ft||p.tipo===ft);
+  }).sort((a,b) => b.ts - a.ts);
+
+  const cont = document.getElementById('lista');
+  if (!f.length) {
+    cont.innerHTML = `<div class="empty">📭 Sin pedidos para mostrar</div>`;
+    stats(); return;
+  }
+  cont.innerHTML = f.map(p => {
+    const ri = pedidos.indexOf(p);
+    return `<div class="card">
+      <div class="card-top">
+        <div>
+          <div class="card-name">${p.nombre}</div>
+          <div class="card-prod">${p.prod || '<span style="color:var(--muted);font-style:italic">Sin producto anotado</span>'}</div>
+        </div>
+        ${badge(p.estado)}
+      </div>
+      <div class="card-meta">
+        <div class="meta-item">${ico.wa} +51 ${p.wa}</div>
+        <div class="meta-item">${ico.pkg} ${tipoLabel(p.tipo)}</div>
+        ${p.fecha ? `<div class="meta-item">${ico.cal} ${p.fecha}</div>` : ''}
+      </div>
+      ${p.agencia ? `<div class="card-agencia">${ico.pin} ${p.agencia}</div>` : ''}
+      <div class="card-actions">
+        <button class="act wa"  onclick="abrirWA(${ri})"   title="WhatsApp">${ico.wa} WA</button>
+        <button class="act tel" onclick="llamar(${ri})"     title="Llamar">${ico.tel} Llamar</button>
+        <button class="act"     onclick="editarPedido(${ri})" title="Editar">${ico.edit} Editar</button>
+        <select class="status-sel" onchange="cambiarEstado(${ri},this.value)" aria-label="Estado del pedido">
+          ${['Pendiente','Empacado','Enviado','Entregado'].map(s=>`<option value="${s}"${p.estado===s?' selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>
+    </div>`;
+  }).join('');
+  stats();
+}
+
+function cambiarEstado(i, v) {
+  pedidos[i].estado = v;
+  save(K_P, pedidos);
+  render();
+}
+
+function abrirWA(i) {
+  const p = pedidos[i];
+  const msg = `Hola ${p.nombre.split(' ')[0]} 👋, te escribimos de Mara Store.\nTu pedido está en estado: *${p.estado}*.\n${p.agencia ? 'Agencia: ' + p.agencia + '\n' : ''}Cualquier duda estamos aquí 🙌`;
+  window.open('https://wa.me/51' + p.wa + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function llamar(i) { window.location.href = 'tel:+51' + pedidos[i].wa; }
+
+// ── AutoFill cliente ──────────────────────────────────
+function autoFill() {
+  const wa = document.getElementById('m-wa').value.trim();
+  if (wa.length >= 9) {
+    const c = get(K_C)[wa];
+    if (c) {
+      if (!document.getElementById('m-nombre').value) document.getElementById('m-nombre').value = c.nombre || '';
+      if (!document.getElementById('m-agencia').value) document.getElementById('m-agencia').value = c.agencia || '';
+      if (!document.getElementById('m-dni').value) document.getElementById('m-dni').value = c.dni || '';
+      if (c.tipo) document.getElementById('m-tipo').value = c.tipo;
+    }
+  }
+}
+
+// ── Modal ─────────────────────────────────────────────
+function abrirModal() {
+  editIdx = null;
+  limpiar();
+  document.getElementById('modal-titulo').textContent = 'Nuevo pedido';
+  document.getElementById('btn-eliminar').classList.add('hidden');
+  document.getElementById('overlay').classList.add('open');
+}
+
+function editarPedido(i) {
+  editIdx = i;
+  const p = pedidos[i];
+  document.getElementById('m-nombre').value  = p.nombre  || '';
+  document.getElementById('m-wa').value      = p.wa      || '';
+  document.getElementById('m-prod').value    = p.prod    || '';
+  document.getElementById('m-tipo').value    = p.tipo    || 'shalom';
+  document.getElementById('m-agencia').value = p.agencia || '';
+  document.getElementById('m-dni').value     = p.dni     || '';
+  document.getElementById('m-fecha').value   = p.fecha   || '';
+  document.getElementById('m-obs').value     = p.obs     || '';
+  document.getElementById('m-estado').value  = p.estado  || 'Pendiente';
+  document.getElementById('modal-titulo').textContent = 'Editar pedido';
+  document.getElementById('btn-eliminar').classList.remove('hidden');
+  document.getElementById('overlay').classList.add('open');
+}
+
+function cerrarModal() { document.getElementById('overlay').classList.remove('open'); }
+function cerrarBg(e)   { if (e.target === document.getElementById('overlay')) cerrarModal(); }
+
+function limpiar() {
+  ['m-nombre','m-wa','m-prod','m-agencia','m-dni','m-fecha','m-obs'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('m-tipo').value   = 'shalom';
+  document.getElementById('m-estado').value = 'Pendiente';
+}
+
+function guardar() {
+  const nom = document.getElementById('m-nombre').value.trim();
+  const wa  = document.getElementById('m-wa').value.trim();
+  if (!nom || !wa) { alert('Nombre y WhatsApp son obligatorios.'); return; }
+  const p = {
+    id:      editIdx !== null ? pedidos[editIdx].id : nextId++,
+    nombre:  nom,
+    wa,
+    prod:    document.getElementById('m-prod').value.trim(),
+    tipo:    document.getElementById('m-tipo').value,
+    agencia: document.getElementById('m-agencia').value.trim(),
+    dni:     document.getElementById('m-dni').value.trim(),
+    fecha:   document.getElementById('m-fecha').value,
+    obs:     document.getElementById('m-obs').value.trim(),
+    estado:  document.getElementById('m-estado').value,
+    ts:      editIdx !== null ? pedidos[editIdx].ts : Date.now()
+  };
+  const clientes = get(K_C);
+  clientes[wa] = { nombre: p.nombre, wa: p.wa, agencia: p.agencia, dni: p.dni, tipo: p.tipo };
+  save(K_C, clientes);
+  if (editIdx !== null) pedidos[editIdx] = p; else pedidos.unshift(p);
+  save(K_P, pedidos);
+  cerrarModal();
+  render();
+}
+
+function eliminarPedido() {
+  if (!confirm('¿Eliminar este pedido?')) return;
+  pedidos.splice(editIdx, 1);
+  save(K_P, pedidos);
+  cerrarModal();
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
