@@ -325,6 +325,15 @@ let nextId  = pedidos.length ? Math.max(...pedidos.map(p => p.id||0)) + 1 : 1;
 const hoy = new Date();
 document.getElementById('fecha-hoy').textContent = hoy.toLocaleDateString('es-PE',{weekday:'short',day:'numeric',month:'short'});
 
+function formatFecha(f) {
+  if (!f) return '';
+  try {
+    const d = new Date(f);
+    if (isNaN(d)) return f;
+    return d.toLocaleDateString('es-PE', {day:'2-digit', month:'2-digit', year:'numeric'});
+  } catch(e) { return f; }
+}
+
 function tipoKey(t) {
   if (t.toLowerCase().includes('shalom'))  return 'shalom';
   if (t.toLowerCase().includes('olva'))    return 'olva';
@@ -349,7 +358,8 @@ async function sincronizar() {
         fecha:   row['Fecha Envio'] || row['Fecha Envío'] || '',
         obs:     row['Observaciones'] || '',
         estado:  row['Estado']      || 'Pendiente',
-        ts:      Date.parse(row['Fecha']) || Date.now()
+        ts:      Date.parse(row['Fecha']) || Date.now(),
+        fechaRaw: row['Fecha Envio'] || row['Fecha Envío'] || ''
       }));
       const local = get(K_P);
       const waRemoto = new Set(remotos.map(p => p.wa + '|' + p.nombre));
@@ -416,7 +426,7 @@ function render() {
       <div class="card-meta">
         <div class="meta-item">${ico.wa} +51 ${p.wa}</div>
         <div class="meta-item">${ico.pkg} ${tipoLabel(p.tipo)}</div>
-        ${p.fecha ? `<div class="meta-item">${ico.cal} ${p.fecha}</div>` : ''}
+        ${p.fecha ? `<div class="meta-item">${ico.cal} ${formatFecha(p.fecha)}</div>` : ''}
       </div>
       ${p.agencia ? `<div class="card-agencia">${ico.pin} ${p.agencia}</div>` : ''}
       <div class="card-actions">
