@@ -130,6 +130,14 @@
       background-repeat: no-repeat; background-position: right 6px center;
     }
     .empty { text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-size: 13px; }
+    .act.pri { border-color: #3b7de8; color: #3b7de8; font-size: 16px; flex: 0; padding: 0 10px; }
+    .act.pri:hover { background: #eef3fd; }
+
+    @media print {
+      body * { visibility: hidden; }
+      #ticket-print, #ticket-print * { visibility: visible; }
+      #ticket-print { position: fixed; left: 0; top: 0; width: 80mm; }
+    }
 
     /* Modal */
     .overlay {
@@ -433,6 +441,7 @@ function render() {
         <button class="act wa"  onclick="abrirWA(${ri})"   title="WhatsApp">${ico.wa} WA</button>
         <button class="act tel" onclick="llamar(${ri})"     title="Llamar">${ico.tel} Llamar</button>
         <button class="act"     onclick="editarPedido(${ri})" title="Editar">${ico.edit} Editar</button>
+        <button class="act pri" onclick="imprimirTicket(${ri})" title="Imprimir rótulo">🖨️</button>
         <select class="status-sel" onchange="cambiarEstado(${ri},this.value)" aria-label="Estado del pedido">
           ${['Pendiente','Empacado','Enviado','Entregado'].map(s=>`<option value="${s}"${p.estado===s?' selected':''}>${s}</option>`).join('')}
         </select>
@@ -540,6 +549,89 @@ function eliminarPedido() {
 }
 
 sincronizar();
+</script>
+
+<!-- TICKET DE IMPRESIÓN -->
+<div id="ticket-print" style="display:none; font-family:'Courier New',monospace; width:80mm; padding:4mm; background:#fff; color:#000; box-sizing:border-box;">
+  <div id="ticket-contenido"></div>
+</div>
+
+<!-- MODAL PREVIA DEL TICKET -->
+<div class="overlay" id="overlay-ticket" onclick="cerrarTicket(event)" style="align-items:center;">
+  <div style="background:#fff;border-radius:14px;padding:1.25rem;width:92%;max-width:380px;max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+      <h2 style="font-size:15px;font-weight:600;margin:0;">Vista previa del rótulo</h2>
+      <button onclick="document.getElementById('overlay-ticket').classList.remove('open')" style="background:none;border:none;cursor:pointer;font-size:20px;color:var(--muted);padding:0;">×</button>
+    </div>
+    <div id="ticket-preview" style="border:1px dashed var(--border);border-radius:8px;padding:12px;background:#fafaf8;font-family:'Courier New',monospace;font-size:12px;line-height:1.5;"></div>
+    <div style="display:flex;gap:8px;margin-top:1rem;">
+      <button onclick="document.getElementById('overlay-ticket').classList.remove('open')" style="flex:1;height:38px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;cursor:pointer;font-family:inherit;">Cancelar</button>
+      <button onclick="ejecutarImpresion()" style="flex:1;height:38px;border-radius:8px;border:none;background:#3b7de8;color:#fff;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">🖨️ Imprimir</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function imprimirTicket(i) {
+  const p = pedidos[i];
+  const tienda = 'Mara Store';
+  const nombre = (p.nombre || '').toUpperCase();
+  const tel    = p.wa || '';
+  const tipo   = p.tipo === 'shalom' ? 'SHALOM' : p.tipo === 'olva' ? 'OLVA COURIER' : 'DELIVERY LIMA';
+  const agencia = p.agencia || p.direccion || '';
+  const dni    = p.dni || '';
+  const fecha  = p.fecha ? formatFecha(p.fecha) : new Date().toLocaleDateString('es-PE');
+  const prod   = p.prod || '';
+  const obs    = p.obs  || '';
+
+  const html = `
+<div style="padding:2mm 0;">
+  <table style="width:100%;border-bottom:1.5px solid #000;padding-bottom:6px;margin-bottom:6px;">
+    <tr>
+      <td style="font-size:9px;font-weight:700;letter-spacing:.05em;">REMITENTE</td>
+      <td style="text-align:right;font-size:11px;font-weight:700;">${tienda}</td>
+    </tr>
+  </table>
+
+  <div style="font-size:9px;font-weight:700;letter-spacing:.05em;margin-bottom:2px;">PARA:</div>
+  <div style="font-size:22px;font-weight:900;line-height:1.1;margin-bottom:4px;">${nombre}</div>
+  <div style="font-size:18px;font-weight:700;margin-bottom:10px;">${tel}</div>
+
+  <div style="font-size:9px;font-weight:700;letter-spacing:.05em;margin-bottom:3px;">DESTINO:</div>
+  ${agencia ? `<div style="font-size:11px;font-weight:700;margin-bottom:3px;">AGENCIA: ${agencia.toUpperCase()}</div>` : ''}
+  ${dni     ? `<div style="font-size:11px;font-weight:600;margin-bottom:3px;">DNI: ${dni}</div>` : ''}
+  ${prod    ? `<div style="font-size:10px;margin-bottom:3px;">PRODUCTO: ${prod.toUpperCase()}</div>` : ''}
+  ${obs     ? `<div style="font-size:9px;color:#444;margin-bottom:3px;">OBS: ${obs}</div>` : ''}
+
+  <div style="border-top:1.5px solid #000;margin:8px 0;"></div>
+
+  <table style="width:100%;">
+    <tr>
+      <td style="width:50%;">
+        <div style="background:#000;color:#fff;padding:5px 10px;font-size:13px;font-weight:900;border-radius:4px;display:inline-block;">${tipo}</div>
+      </td>
+      <td style="text-align:right;font-size:12px;font-weight:700;vertical-align:middle;">${fecha.replace(/\//g,'/')}</td>
+    </tr>
+  </table>
+</div>`;
+
+  document.getElementById('ticket-preview').innerHTML = html;
+  document.getElementById('ticket-contenido').innerHTML = html;
+  document.getElementById('overlay-ticket').classList.add('open');
+}
+
+function ejecutarImpresion() {
+  document.getElementById('ticket-print').style.display = 'block';
+  window.print();
+  setTimeout(() => {
+    document.getElementById('ticket-print').style.display = 'none';
+  }, 1000);
+}
+
+function cerrarTicket(e) {
+  if (e.target === document.getElementById('overlay-ticket'))
+    document.getElementById('overlay-ticket').classList.remove('open');
+}
 </script>
 </body>
 </html>
