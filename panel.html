@@ -190,7 +190,10 @@
         <p>Mara Store</p>
       </div>
     </div>
-    <span class="header-date" id="fecha-hoy"></span>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="header-date" id="fecha-hoy"></span>
+      <button onclick="sincronizar()" title="Sincronizar con Google Sheets" style="background:none;border:1px solid var(--border);border-radius:8px;padding:4px 8px;cursor:pointer;font-size:12px;color:var(--muted);font-family:inherit">🔄 Sync</button>
+    </div>
   </div>
 
   <!-- Link rápido al formulario -->
@@ -309,18 +312,55 @@
 </div>
 
 <script>
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxZtBVWrWFtf_2tuwIUlL-PKKdv-TiA1ttVcGXk08ucSpx9HZZ_Op0LtMCc4_s9Q0M9/exec';
 const K_P = 'ms_pedidos';
 const K_C = 'ms_clientes';
-const get = k => { try { return JSON.parse(localStorage.getItem(k) || (k===K_P?'[]':'{}')) } catch(e) { return k===K_P?[]:{} } };
+const get  = k => { try { return JSON.parse(localStorage.getItem(k) || (k===K_P?'[]':'{}')) } catch(e) { return k===K_P?[]:{} } };
 const save = (k,v) => localStorage.setItem(k, JSON.stringify(v));
 
 let pedidos = get(K_P);
 let editIdx = null;
 let nextId  = pedidos.length ? Math.max(...pedidos.map(p => p.id||0)) + 1 : 1;
 
-// Fecha header
 const hoy = new Date();
 document.getElementById('fecha-hoy').textContent = hoy.toLocaleDateString('es-PE',{weekday:'short',day:'numeric',month:'short'});
+
+function tipoKey(t) {
+  if (t.toLowerCase().includes('shalom'))  return 'shalom';
+  if (t.toLowerCase().includes('olva'))    return 'olva';
+  return 'delivery';
+}
+
+async function sincronizar() {
+  const lista = document.getElementById('lista');
+  lista.innerHTML = '<div class="empty">Sincronizando pedidos...</div>';
+  try {
+    const res  = await fetch(SHEETS_URL);
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0) {
+      const remotos = data.map((row, i) => ({
+        id:      row['ID']          || i + 1,
+        nombre:  row['Nombre']      || '',
+        wa:      String(row['WhatsApp'] || ''),
+        prod:    '',
+        tipo:    tipoKey(row['Tipo Envio'] || row['Tipo Envío'] || ''),
+        agencia: row['Agencia']     || row['Direccion'] || '',
+        dni:     row['DNI']         || '',
+        fecha:   row['Fecha Envio'] || row['Fecha Envío'] || '',
+        obs:     row['Observaciones'] || '',
+        estado:  row['Estado']      || 'Pendiente',
+        ts:      Date.parse(row['Fecha']) || Date.now()
+      }));
+      const local = get(K_P);
+      const waRemoto = new Set(remotos.map(p => p.wa + '|' + p.nombre));
+      const soloLocal = local.filter(p => !waRemoto.has(p.wa + '|' + p.nombre));
+      pedidos = [...remotos, ...soloLocal];
+      save(K_P, pedidos);
+      nextId = pedidos.length ? Math.max(...pedidos.map(p => p.id||0)) + 1 : 1;
+    }
+  } catch(e) { console.warn('Sin conexion, usando datos locales.'); }
+  render();
+}
 
 // ── Stats ──────────────────────────────────────────────
 function stats() {
@@ -489,7 +529,7 @@ function eliminarPedido() {
   render();
 }
 
-render();
+sincronizar();
 </script>
 </body>
 </html>

@@ -681,6 +681,8 @@ document.addEventListener('click', function(e) {
 });
 
 // ─── ENVIAR ───────────────────────────────────────────────
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxZtBVWrWFtf_2tuwIUlL-PKKdv-TiA1ttVcGXk08ucSpx9HZZ_Op0LtMCc4_s9Q0M9/exec';
+
 function enviar() {
   const wa    = document.getElementById('whatsapp').value.trim();
   const nom   = document.getElementById('nombre').value.trim();
@@ -693,10 +695,41 @@ function enviar() {
   if (tipo === 'delivery' && !sel.distrito) { alert('Selecciona tu distrito.'); return; }
   if (tipo === 'delivery' && !document.getElementById('direccion').value.trim()) { alert('Ingresa tu dirección exacta.'); return; }
 
-  buildResumen();
-  document.getElementById('form-area').classList.add('hidden');
-  document.getElementById('success-area').classList.remove('hidden');
-  window.scrollTo({top: 0, behavior: 'smooth'});
+  const agencia = tipo === 'shalom' ? (sel.shalom ? sel.shalom.t + ' — ' + sel.shalom.d : '')
+                : tipo === 'olva'   ? (sel.olva   ? sel.olva.t   + ' — ' + sel.olva.d   : '')
+                : '';
+  const direccion = tipo === 'delivery'
+    ? sel.distrito + ' — ' + document.getElementById('direccion').value.trim() + (document.getElementById('referencia').value.trim() ? ' (Ref: ' + document.getElementById('referencia').value.trim() + ')' : '')
+    : '';
+
+  const payload = {
+    nombre:     nom,
+    wa:         wa,
+    tipo:       tipo === 'shalom' ? 'Shalom' : tipo === 'olva' ? 'Olva Courier' : 'Delivery Lima',
+    agencia:    agencia,
+    dni:        document.getElementById('dni').value.trim(),
+    direccion:  direccion,
+    fechaEnvio: document.getElementById('fecha').value,
+    obs:        document.getElementById('obs').value.trim()
+  };
+
+  const btn = document.querySelector('.btn-submit');
+  btn.textContent = 'Guardando...';
+  btn.disabled = true;
+
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(() => {}).finally(() => {
+    btn.textContent = '📅 Agendar y ver resumen';
+    btn.disabled = false;
+    buildResumen();
+    document.getElementById('form-area').classList.add('hidden');
+    document.getElementById('success-area').classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 }
 
 function buildResumen() {
