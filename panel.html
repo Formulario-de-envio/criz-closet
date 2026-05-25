@@ -472,38 +472,38 @@ function cerrarSesion() {
 
 // ── MENSAJES AUTOMÁTICOS POR ESTADO ──────────────────
 const MENSAJES_ESTADO = {
-  'Pendiente': (p) =>
-    `Hola ${p.nombre.split(' ')[0]} 👋, somos *Criz Closet*.
-` +
-    `Recibimos tu pedido y está siendo preparado. Te avisamos cuando esté listo para envío. ¡Gracias por tu compra! 🛍️`,
-
-  'Empacado': (p) =>
-    `Hola ${p.nombre.split(' ')[0]} 👋, tu pedido de *Criz Closet* ya está *empacado* y listo. 📦
-` +
-    `Pronto lo enviamos. Te notificamos en cuanto salga.`,
-
-  'Enviado': (p) => {
-    const dest = p.tipo === 'delivery'
-      ? `a tu dirección en *${p.agencia || 'tu distrito'}*`
-      : `a la agencia *${p.agencia || p.tipo}*`;
-    return `Hola ${p.nombre.split(' ')[0]} 👋, tu pedido de *Criz Closet* ya fue *enviado* ${dest}. 🚚
-` +
-           `${p.dni ? 'Recuerda llevar tu DNI/CE: *' + p.dni + '*
-' : ''}` +
-           `¡Cualquier consulta aquí estamos! 😊`;
+  'Pendiente': function(p) {
+    var n = p.nombre.split(' ')[0];
+    return 'Hola ' + n + ' \u{1F44B}, somos *Criz Closet*.\n' +
+           'Recibimos tu pedido y est\u00e1 siendo preparado. Te avisamos cuando est\u00e9 listo para env\u00edo. \u00a1Gracias por tu compra! \uD83D\uDED2';
   },
-
-  'Entregado': (p) =>
-    `Hola ${p.nombre.split(' ')[0]} 👋, esperamos que hayas recibido tu pedido de *Criz Closet* con éxito. ✅
-` +
-    `Nos encantaría saber tu opinión. ¡Gracias por confiar en nosotros! 🙌`
+  'Empacado': function(p) {
+    var n = p.nombre.split(' ')[0];
+    return 'Hola ' + n + ' \u{1F44B}, tu pedido de *Criz Closet* ya est\u00e1 *empacado* y listo. \uD83D\uDCE6\n' +
+           'Pronto lo enviamos. Te notificamos en cuanto salga.';
+  },
+  'Enviado': function(p) {
+    var n = p.nombre.split(' ')[0];
+    var dest = p.tipo === 'delivery'
+      ? 'a tu direcci\u00f3n en *' + (p.agencia || 'tu distrito') + '*'
+      : 'a la agencia *' + (p.agencia || p.tipo) + '*';
+    var dni = p.dni ? 'Recuerda llevar tu DNI/CE: *' + p.dni + '*\n' : '';
+    return 'Hola ' + n + ' \u{1F44B}, tu pedido de *Criz Closet* ya fue *enviado* ' + dest + '. \uD83D\uDE9A\n' +
+           dni +
+           '\u00a1Cualquier consulta aqu\u00ed estamos! \uD83D\uDE0A';
+  },
+  'Entregado': function(p) {
+    var n = p.nombre.split(' ')[0];
+    return 'Hola ' + n + ' \u{1F44B}, esperamos que hayas recibido tu pedido de *Criz Closet* con \u00e9xito. \u2705\n' +
+           'Nos encantar\u00eda saber tu opini\u00f3n. \u00a1Gracias por confiar en nosotros! \uD83D\uDE4C';
+  }
 };
 
 function enviarMsgEstado(i) {
-  const p = pedidos[i];
-  const fn = MENSAJES_ESTADO[p.estado];
+  var p = pedidos[i];
+  var fn = MENSAJES_ESTADO[p.estado];
   if (!fn) return;
-  const msg = fn(p);
+  var msg = fn(p);
   window.open('https://wa.me/51' + p.wa + '?text=' + encodeURIComponent(msg), '_blank');
 }
 
