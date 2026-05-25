@@ -383,6 +383,10 @@
       <label>Observaciones</label>
       <textarea id="m-obs" placeholder="Notas internas sobre el pedido..."></textarea>
     </div>
+    <div class="mfield">
+      <label>Código de seguimiento</label>
+      <input type="text" id="m-tracking" placeholder="Ej: SHL-123456789">
+    </div>
 
     <div class="modal-btns">
       <button class="mbtn sec" onclick="cerrarModal()">Cancelar</button>
@@ -507,6 +511,48 @@ function enviarMsgEstado(i) {
   window.open('https://wa.me/51' + p.wa + '?text=' + encodeURIComponent(msg), '_blank');
 }
 
+
+// ── TRACKING ──────────────────────────────────────────
+function getTrackingUrl(tipo, codigo) {
+  if (!codigo) return null;
+  var tl = (tipo || '').toLowerCase();
+  if (tl.includes('shalom')) {
+    return 'https://rastrea.shalom.com.pe/?codigo=' + encodeURIComponent(codigo);
+  }
+  if (tl.includes('olva')) {
+    return 'https://www.olvacourier.com.pe/rastreo?codigo=' + encodeURIComponent(codigo);
+  }
+  return null;
+}
+
+function enviarTracking(i) {
+  var p = pedidos[i];
+  if (!p.tracking) { alert('Este pedido no tiene código de seguimiento.'); return; }
+  var url = getTrackingUrl(p.tipo, p.tracking);
+  var nombre = p.nombre.split(' ')[0];
+  var empresa = p.tipo === 'shalom' ? 'Shalom' : p.tipo === 'olva' ? 'Olva Courier' : '';
+  var msg;
+  if (url) {
+    msg = 'Hola ' + nombre + ' \uD83D\uDC4B, tu pedido de *Criz Closet* ya fue enviado por *' + empresa + '*.' +
+          '\n\nPuedes rastrear tu envio con este link:\n' + url +
+          '\n\nTu c\u00f3digo de seguimiento: *' + p.tracking + '*' +
+          (p.dni ? '\nRecuerda llevar tu DNI: *' + p.dni + '*' : '') +
+          '\n\n\u00a1Cualquier consulta aqu\u00ed estamos! \uD83D\uDE0A';
+  } else {
+    msg = 'Hola ' + nombre + ' \uD83D\uDC4B, tu pedido de *Criz Closet* est\u00e1 en camino.' +
+          '\nC\u00f3digo de seguimiento: *' + p.tracking + '*';
+  }
+  window.open('https://wa.me/51' + p.wa + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function verTracking(i) {
+  var p = pedidos[i];
+  if (!p.tracking) return;
+  var url = getTrackingUrl(p.tipo, p.tracking);
+  if (url) window.open(url, '_blank');
+  else alert('Tracking disponible solo para Shalom y Olva Courier.');
+}
+
 function tipoKey(t) {
   if (!t) return 'delivery';
   const tl = t.toLowerCase();
@@ -614,9 +660,11 @@ function render() {
       </div>
       ${p.agencia ? `<div class="card-agencia">${ico.pin} ${p.agencia}</div>` : ''}
       ${p.vendedor ? `<div class="card-vendedor">👤 ${p.vendedor}</div>` : ''}
+      ${p.tracking ? `<div class="card-vendedor" style="color:var(--brand);cursor:pointer;" onclick="verTracking(${ri})">🔍 <strong>${p.tracking}</strong> — <span style="text-decoration:underline">Ver en web</span></div>` : ''}
       <div class="card-actions">
         <button class="act wa"  onclick="abrirWA(${ri})"    title="Mensaje general">${ico.wa} WA</button>
         <button class="act wa"  onclick="enviarMsgEstado(${ri})" title="Mensaje automático por estado" style="flex:0;padding:0 8px;font-size:11px;">✉️ Auto</button>
+        ${p.tracking ? `<button class="act" onclick="enviarTracking(${ri})" title="Enviar link de tracking" style="flex:0;padding:0 8px;font-size:11px;border-color:#7c3aed;color:#7c3aed;">📦 Track</button>` : ''}
         <button class="act tel" onclick="llamar(${ri})"     title="Llamar">${ico.tel} Llamar</button>
         <button class="act"     onclick="editarPedido(${ri})" title="Editar">${ico.edit} Editar</button>
         <button class="act pri" onclick="imprimirTicket(${ri})" title="Imprimir rótulo">🖨️</button>
@@ -677,8 +725,9 @@ function editarPedido(i) {
   document.getElementById('m-agencia').value = p.agencia || '';
   document.getElementById('m-dni').value     = p.dni     || '';
   document.getElementById('m-fecha').value   = p.fecha   || '';
-  document.getElementById('m-obs').value     = p.obs     || '';
-  document.getElementById('m-estado').value  = p.estado  || 'Pendiente';
+  document.getElementById('m-obs').value      = p.obs      || '';
+  document.getElementById('m-tracking').value = p.tracking || '';
+  document.getElementById('m-estado').value   = p.estado   || 'Pendiente';
   document.getElementById('modal-titulo').textContent = 'Editar pedido';
   if (usuarioActual && usuarioActual.rol === 'admin') {
     document.getElementById('btn-eliminar').style.display = 'flex';
@@ -693,7 +742,7 @@ function cerrarModal() {
 function cerrarBg(e)   { if (e.target === document.getElementById('overlay')) cerrarModal(); }
 
 function limpiar() {
-  ['m-nombre','m-wa','m-prod','m-agencia','m-dni','m-fecha','m-obs'].forEach(id => document.getElementById(id).value = '');
+  ['m-nombre','m-wa','m-prod','m-agencia','m-dni','m-fecha','m-obs','m-tracking'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('m-tipo').value   = 'shalom';
   document.getElementById('m-estado').value = 'Pendiente';
 }
@@ -711,8 +760,9 @@ function guardar() {
     agencia: document.getElementById('m-agencia').value.trim(),
     dni:     document.getElementById('m-dni').value.trim(),
     fecha:   document.getElementById('m-fecha').value,
-    obs:     document.getElementById('m-obs').value.trim(),
-    estado:  document.getElementById('m-estado').value,
+    obs:      document.getElementById('m-obs').value.trim(),
+    tracking: document.getElementById('m-tracking').value.trim(),
+    estado:   document.getElementById('m-estado').value,
     ts:      editIdx !== null ? pedidos[editIdx].ts : Date.now(),
     vendedor: usuarioActual ? usuarioActual.nombre : ''
   };
