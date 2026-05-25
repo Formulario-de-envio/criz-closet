@@ -508,8 +508,11 @@ function enviarMsgEstado(i) {
 }
 
 function tipoKey(t) {
-  if (t.toLowerCase().includes('shalom'))  return 'shalom';
-  if (t.toLowerCase().includes('olva'))    return 'olva';
+  if (!t) return 'delivery';
+  const tl = t.toLowerCase();
+  if (tl.includes('shalom'))   return 'shalom';
+  if (tl.includes('olva'))     return 'olva';
+  if (tl === 'delivery' || tl.includes('delivery') || tl.includes('lima')) return 'delivery';
   return 'delivery';
 }
 
@@ -525,8 +528,8 @@ async function sincronizar() {
         nombre:  row['Nombre']      || '',
         wa:      String(row['WhatsApp'] || ''),
         prod:    '',
-        tipo:    tipoKey(row['Tipo Envio'] || row['Tipo Envío'] || ''),
-        agencia: row['Agencia']     || row['Direccion'] || '',
+        tipo:    tipoKey(row['Tipo Envío'] || row['Tipo Envio'] || row['Tipo de Envío'] || row['Tipo de Envio'] || ''),
+        agencia: row['Agencia']     || row['Dirección'] || row['Direccion'] || row['Dirección'] || '',
         dni:     row['DNI']         || '',
         fecha:   row['Fecha Envio'] || row['Fecha Envío'] || '',
         obs:     row['Observaciones'] || '',
@@ -558,7 +561,13 @@ function badge(e) {
   const m = {Pendiente:'b-pend',Empacado:'b-emp',Enviado:'b-env',Entregado:'b-ent'};
   return `<span class="badge ${m[e]||'b-pend'}">${e}</span>`;
 }
-function tipoLabel(t) { return t==='shalom'?'Shalom':t==='olva'?'Olva Courier':'Delivery Lima'; }
+function tipoLabel(t) {
+  if (!t) return 'Delivery Lima';
+  const tl = t.toLowerCase();
+  if (tl === 'shalom' || tl.includes('shalom')) return 'Shalom';
+  if (tl === 'olva'   || tl.includes('olva'))   return 'Olva Courier';
+  return 'Delivery Lima';
+}
 
 // ── SVG icons ─────────────────────────────────────────
 const ico = {
