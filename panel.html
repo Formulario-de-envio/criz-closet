@@ -386,7 +386,7 @@
 
     <div class="modal-btns">
       <button class="mbtn sec" onclick="cerrarModal()">Cancelar</button>
-      <button class="mbtn danger hidden" id="btn-eliminar" onclick="eliminarPedido()">Eliminar</button>
+      <button class="mbtn danger hidden" id="btn-eliminar" onclick="eliminarPedido()" style="display:none">Eliminar</button>
       <button class="mbtn pri" onclick="guardar()">Guardar</button>
     </div>
   </div>
@@ -469,6 +469,44 @@ function cerrarSesion() {
   }
 })();
 
+
+// ── MENSAJES AUTOMÁTICOS POR ESTADO ──────────────────
+const MENSAJES_ESTADO = {
+  'Pendiente': (p) =>
+    `Hola ${p.nombre.split(' ')[0]} 👋, somos *Criz Closet*.
+` +
+    `Recibimos tu pedido y está siendo preparado. Te avisamos cuando esté listo para envío. ¡Gracias por tu compra! 🛍️`,
+
+  'Empacado': (p) =>
+    `Hola ${p.nombre.split(' ')[0]} 👋, tu pedido de *Criz Closet* ya está *empacado* y listo. 📦
+` +
+    `Pronto lo enviamos. Te notificamos en cuanto salga.`,
+
+  'Enviado': (p) => {
+    const dest = p.tipo === 'delivery'
+      ? `a tu dirección en *${p.agencia || 'tu distrito'}*`
+      : `a la agencia *${p.agencia || p.tipo}*`;
+    return `Hola ${p.nombre.split(' ')[0]} 👋, tu pedido de *Criz Closet* ya fue *enviado* ${dest}. 🚚
+` +
+           `${p.dni ? 'Recuerda llevar tu DNI/CE: *' + p.dni + '*
+' : ''}` +
+           `¡Cualquier consulta aquí estamos! 😊`;
+  },
+
+  'Entregado': (p) =>
+    `Hola ${p.nombre.split(' ')[0]} 👋, esperamos que hayas recibido tu pedido de *Criz Closet* con éxito. ✅
+` +
+    `Nos encantaría saber tu opinión. ¡Gracias por confiar en nosotros! 🙌`
+};
+
+function enviarMsgEstado(i) {
+  const p = pedidos[i];
+  const fn = MENSAJES_ESTADO[p.estado];
+  if (!fn) return;
+  const msg = fn(p);
+  window.open('https://wa.me/51' + p.wa + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
 function tipoKey(t) {
   if (t.toLowerCase().includes('shalom'))  return 'shalom';
   if (t.toLowerCase().includes('olva'))    return 'olva';
@@ -540,7 +578,9 @@ function render() {
   const ft = document.getElementById('fil-tipo').value;
   let f = pedidos.filter(p => {
     const m = !q || p.nombre.toLowerCase().includes(q) || p.wa.includes(q) || (p.prod||'').toLowerCase().includes(q);
-    return m && (!fe||p.estado===fe) && (!ft||p.tipo===ft);
+    const esAdmin = usuarioActual && usuarioActual.rol === 'admin';
+    const esSuyo  = !p.vendedor || (usuarioActual && p.vendedor === usuarioActual.nombre);
+    return m && (!fe||p.estado===fe) && (!ft||p.tipo===ft) && (esAdmin || esSuyo);
   }).sort((a,b) => b.ts - a.ts);
 
   const cont = document.getElementById('lista');
@@ -566,7 +606,8 @@ function render() {
       ${p.agencia ? `<div class="card-agencia">${ico.pin} ${p.agencia}</div>` : ''}
       ${p.vendedor ? `<div class="card-vendedor">👤 ${p.vendedor}</div>` : ''}
       <div class="card-actions">
-        <button class="act wa"  onclick="abrirWA(${ri})"   title="WhatsApp">${ico.wa} WA</button>
+        <button class="act wa"  onclick="abrirWA(${ri})"    title="Mensaje general">${ico.wa} WA</button>
+        <button class="act wa"  onclick="enviarMsgEstado(${ri})" title="Mensaje automático por estado" style="flex:0;padding:0 8px;font-size:11px;">✉️ Auto</button>
         <button class="act tel" onclick="llamar(${ri})"     title="Llamar">${ico.tel} Llamar</button>
         <button class="act"     onclick="editarPedido(${ri})" title="Editar">${ico.edit} Editar</button>
         <button class="act pri" onclick="imprimirTicket(${ri})" title="Imprimir rótulo">🖨️</button>
@@ -630,11 +671,16 @@ function editarPedido(i) {
   document.getElementById('m-obs').value     = p.obs     || '';
   document.getElementById('m-estado').value  = p.estado  || 'Pendiente';
   document.getElementById('modal-titulo').textContent = 'Editar pedido';
-  document.getElementById('btn-eliminar').classList.remove('hidden');
+  if (usuarioActual && usuarioActual.rol === 'admin') {
+    document.getElementById('btn-eliminar').style.display = 'flex';
+  }
   document.getElementById('overlay').classList.add('open');
 }
 
-function cerrarModal() { document.getElementById('overlay').classList.remove('open'); }
+function cerrarModal() {
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('btn-eliminar').style.display = 'none';
+}
 function cerrarBg(e)   { if (e.target === document.getElementById('overlay')) cerrarModal(); }
 
 function limpiar() {
